@@ -10,5 +10,6 @@
       }
   }
 
-  export { KeyDocument };
+  // export { KeyDocument };
+  module.exports = { KeyDocument };
   
