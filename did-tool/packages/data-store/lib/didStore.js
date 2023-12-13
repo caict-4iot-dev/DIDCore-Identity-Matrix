@@ -21,12 +21,9 @@ async function validateAuthenticationContext(didDocumentInstance) {
 
   const fields = ['id', 'authentication', 'extension', 'created', 'updated'];
   for (const field of fields) {
-    if (!didDocumentInstance[field]) {
+    if (!didDocumentInstance[field] || didDocumentInstance[field].length === 0) {
       return false;
     }
-  }
-  if (didDocumentInstance['authentication'].length === 0) {
-    return false;
   }
   return true;
 }

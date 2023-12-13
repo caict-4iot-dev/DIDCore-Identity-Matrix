@@ -29,7 +29,9 @@
     "lib"
   ],
   "scripts": {
-    "test": "jest"
+    "test": "mocha  -t 10000 packages/**/*.spec.js",
+    "test didStore": "mocha  -t 10000 packages/**/didStore.spec.js",
+    "test keyStore": "mocha  -t 10000 packages/**/keyStore.spec.js"
   },
   "jest": {
     "testEnvironment": "node",

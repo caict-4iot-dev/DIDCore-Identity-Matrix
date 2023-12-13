@@ -2,7 +2,9 @@
   "name": "did-tool",
   "private": true,
   "scripts": {
-    "test": "mocha  -t 10000 packages/**/*.spec.js"
+    "test": "mocha  -t 10000 packages/**/*.spec.js",
+    "test didStore": "mocha  -t 10000 packages/**/didStore.spec.js",
+    "test keyStore": "mocha  -t 10000 packages/**/keyStore.spec.js"
   },
   "devDependencies": {
     "chai": "^4.3.10",

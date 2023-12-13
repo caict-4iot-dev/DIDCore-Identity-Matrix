@@ -1,5 +1,7 @@
 {
   "dependencies": {
+    "brdc-sjcl": "^1.1.0",
+    "crypto-js": "^4.2.0",
     "sqlite3": "^5.1.6"
   },
   "devDependencies": {
