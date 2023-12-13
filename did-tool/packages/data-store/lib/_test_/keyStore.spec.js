@@ -5,7 +5,7 @@ describe('keyStore Test', () => {
 
   // 正常JSON数据
   const jsonData = {
-    "id": 'did:example:1234#z6Mkpw72M9suPCBv48X2Xj4YKZJH9W7wzEK1aS6JioKSo89M',
+    "id": 'did:example:1234#z6Mkpw72M9suPCBv48X2Xj4YKZJH9W7wzEK1aS6JioKSo89N',
     "type": 'Ed25519VerificationKey2020',
     "controller": 'did:example:1234',
     "publicKeyMultibase": 'z6Mkpw72M9suPCBv48X2Xj4YKZJH9W7wzEK1aS6JioKSo89C',

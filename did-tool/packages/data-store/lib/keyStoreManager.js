@@ -201,7 +201,7 @@ async function getKey(kid, password) {
     const queriedDocument = await keyDocumentRepository.findOne({ where: { kid } });
 
     if (queriedDocument) {
-      const keyStore = queriedDocument.keyStore;
+      let  keyStore = queriedDocument.keyStore;
       if (typeof keyStore === 'string') {
         keyStore = JSON.parse(keyStore)
       }

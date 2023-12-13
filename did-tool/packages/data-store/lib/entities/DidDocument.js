@@ -31,7 +31,7 @@
             '@context': JSON.parse(entity.context),
             id: entity.did,
             verificationMethod: JSON.parse(entity.verificationMethod),
-            authentication: entity.authentication,
+            authentication: JSON.parse(entity.authentication),
             extension: JSON.parse(entity.extension),
             service: JSON.parse(entity.service),
             created: entity.created,
