@@ -120,7 +120,7 @@ export class Ed25519VerificationKey2020 extends LDKeyPair {
    * @returns {object} A plain js object that's ready for serialization
    *   (to JSON, etc), for use in DIDs, Linked Data Proofs, etc.
    */
-  export({publicKey = false, privateKey = false, includeContext = false} = {}) {
+   static export({publicKey = false, privateKey = false, includeContext = false} = {}) {
     if(!(publicKey || privateKey)) {
       throw new TypeError(
         'Export requires specifying either "publicKey" or "privateKey".');
