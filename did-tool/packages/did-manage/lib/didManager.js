@@ -1,6 +1,27 @@
 const { importDID, updateDID, getDID, deleteDID, listDIDs } = require('../../data-store/lib/didStore.js');
 
-//保存
+
+async function formatJson(jsonData) {
+  const dateTimeString = new Date().toISOString().slice(0, -1) + 'Z';
+    console.log(dateTimeString);
+    const didDocument = {
+      "@context": [
+        "https://www.w3.org/ns/did/v1",
+        "https://w3id.org/security/suites/ed25519-2020/v1"
+      ],
+      id: jsonData.did,
+      verificationMethod: jsonData.keys,
+      authentication: jsonData.authentication,
+      extension: jsonData.extension,
+      service: jsonData.service,
+      created: dateTimeString,
+      updated: dateTimeString,
+      proof: jsonData.proof
+    };
+    return didDocument;
+}
+
+//创建
 async function didManagerCreate() {
 
   try {
@@ -9,7 +30,7 @@ async function didManagerCreate() {
         "https://www.w3.org/ns/did/v1",
         "https://w3id.org/security/suites/ed25519-2020/v1"
       ],
-      "id": "did:example:efYGggWARD5GN5TMmMcxm7XRa9DJXRLPWRETLYN",
+      "id": "did:example:efYGggWARD5GN5TMmMcxm7XRa9DJXRLPWRETLYNOP",
       "verificationMethod": [{
         "id": "did:example:efYGggWARD5GN5TMmMcxm7XRa9DJXRLE#z6Mkpw72M9suPCBv48X2Xj4YKZJH9W7wzEK1aS6JioKSo89C",
         "type": "Ed25519VerificationKey2020",
@@ -70,23 +91,9 @@ async function didManagerCreate() {
 async function didManagerImport(jsonData) {
 
   try {
-
-    const didDocument = {
-      "@context": [
-        "https://www.w3.org/ns/did/v1",
-        "https://w3id.org/security/suites/ed25519-2020/v1"
-      ],
-      id: jsonData.did,
-      verificationMethod: jsonData.keys,
-      authentication: jsonData.authentication,
-      extension: jsonData.extension,
-      service: jsonData.service
-    };
-
-
-
-    const saveDidDocument = await importDID(didDocument);
     
+    const didDocument = formatJson(jsonData);
+    const saveDidDocument = importDID(didDocument);
     return saveDidDocument;
 
   } catch (error) {
@@ -97,16 +104,156 @@ async function didManagerImport(jsonData) {
       message: 'System error',
     };
 
-  } finally {
-    // 最后，确保关闭数据库连接
-    if (connection) {
-      await connection.close();
-    }
-  }
+  } 
+}
+
+//修改
+async function didManagerUpdate(jsonData) {
+
+  try {
+    const didDocument = formatJson(jsonData);
+    const updateDidDocument = updateDID(didDocument)
+    return updateDidDocument;
+
+  } catch (error) {
+    console.log('Error connecting to the database:', error);
+
+    throw {
+      errorCode: 400000,
+      message: 'System error',
+    };
+
+  } 
 }
 
 
+//删除
+async function didManagerDelete(did) {
+
+  try {
+    const deleteDidDocument = deleteDID(did)
+    return deleteDidDocument;
+
+  } catch (error) {
+    console.log('Error connecting to the database:', error);
+
+    throw {
+      errorCode: 400000,
+      message: 'System error',
+    };
+
+  } 
+}
+
+//指定 DID 添加一个新的密钥
+async function didManageraddKey(did,id) {
+
+  try {
+    const didDocumentResult = getDID(did)
+    let didDocument = (await didDocumentResult).data.didDocument;
+    didDocument.authentication.push(id)
+    const updateDidDocument = updateDID(didDocument)
+    return updateDidDocument;
+
+  } catch (error) {
+    console.log('Error connecting to the database:', error);
+
+    throw {
+      errorCode: 400000,
+      message: 'System error',
+    };
+
+  } 
+}
+
+//指定 DID 移除一个新的密钥
+async function didManagerRemoveKey(did,id) {
+
+  try {
+    const didDocumentResult = getDID(did)
+    let didDocument = (await didDocumentResult).data.didDocument;
+    let authentication = didDocument.authentication
+    const authenticationRemove = authentication.filter(item => item !== id);
+    didDocument.authentication = authenticationRemove;
+    const updateDidDocument = updateDID(didDocument)
+    return updateDidDocument;
+
+  } catch (error) {
+    console.log('Error connecting to the database:', error);
+
+    throw {
+      errorCode: 400000,
+      message: 'System error',
+    };
+
+  } 
+}
+
+//查询指定 DID 的 DID 文档
+async function didManagerFind(did) {
+
+  try {
+    
+    const didDocumentResult = getDID(did)
+
+    return didDocumentResult;
+
+  } catch (error) {
+    console.log('Error connecting to the database:', error);
+
+    throw {
+      errorCode: 400000,
+      message: 'System error',
+    };
+
+  } 
+}
+
+//指定 DID 添加一个service
+async function didManagerAddService(did, jsonData) {
+
+  try {
+    const didDocumentResult = getDID(did)
+    let didDocument = (await didDocumentResult).data.didDocument;
+    didDocument.service.push(jsonData)
+    const updateDidDocument = updateDID(didDocument)
+    return updateDidDocument;
+
+  } catch (error) {
+    console.log('Error connecting to the database:', error);
+
+    throw {
+      errorCode: 400000,
+      message: 'System error',
+    };
+
+  } 
+}
+
+//指定 DID 添加一个service
+async function didManagerRemoveService(did, jsonData) {
+
+  try {
+    
+    const didDocumentResult = getDID(did)
+    let didDocument = (await didDocumentResult).data.didDocument;
+    let service = didDocument.service
+    const serviceRemove = service.filter(item => item.id !== id);
+    didDocument.service = serviceRemove;
+    const updateDidDocument = updateDID(didDocument)
+    return updateDidDocument;
+
+  } catch (error) {
+    console.log('Error connecting to the database:', error);
+
+    throw {
+      errorCode: 400000,
+      message: 'System error',
+    };
+
+  } 
+}
 // export { importDID, updateDID, getDID, deleteDID, listDIDs };
 
-// module.exports = { didManagerCreate, didManagerImport, didManagerUpdate, didManagerDelete, didManageraddKey, didManagerRemoveKey, didManagerFind, didManagerAddService, didManagerRemoveService };
-module.exports = { didManagerCreate, didManagerImport };
+module.exports = { didManagerCreate, didManagerImport, didManagerUpdate, didManagerDelete, didManageraddKey, didManagerRemoveKey, didManagerFind, didManagerAddService, didManagerRemoveService };
+

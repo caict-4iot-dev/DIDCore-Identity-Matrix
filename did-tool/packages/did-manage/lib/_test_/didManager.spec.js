@@ -1,5 +1,5 @@
 // const { didManagerCreate, didManagerImport, didManagerUpdate, didManagerDelete, didManageraddKey, didManagerRemoveKey, didManagerFind, didManagerAddService, didManagerRemoveService } = require('../didManager.js');
-const { didManagerCreate } = require('../didManager.js');
+const { didManagerCreate, didManagerImport } = require('../didManager.js');
 
 describe('didStore Test', () => {
 
@@ -41,13 +41,13 @@ describe('didStore Test', () => {
     expect(didDocumentCreate.errorCode).toEqual(0);
   });
 
-  // test('save a DidDocument for Document format error', async () => {
-    
-  //   // 调用保存函数
-  //   const saveDidDocument = await importDID(jsonDataError);
-  //   expect(saveDidDocument.errorCode).toEqual(100002);
+  test('save a DidDocument', async () => {
+    const didDocumentCreate = await didManagerCreate(jsonData);
+    // 调用保存函数
+    const saveDidDocument = await didManagerImport(didDocumentCreate.data.didDocument);
+    expect(saveDidDocument.errorCode).toEqual(0);
 
-  // });
+  });
 
   // test('update a DidDocument to the database', async () => {
 
