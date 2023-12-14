@@ -374,4 +374,6 @@ async function listDIDs(pageStart, pageSize) {
   }
 }
 
-export { importDID, updateDID, getDID, deleteDID, listDIDs };
+// export { importDID, updateDID, getDID, deleteDID, listDIDs };
+
+module.exports = { importDID, updateDID, getDID, deleteDID, listDIDs };

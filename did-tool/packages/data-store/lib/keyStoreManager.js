@@ -62,9 +62,10 @@ async function importKey(jsonData, password) {
     };
     // 将 JSON 转换为字符串
     const jsonString = JSON.stringify(keyDocumentInstance);
-    const keyStore = keystore.create(jsonString, password)
+    const keyStore = keystore.create(jsonString, password);
+    const keyStoreString = JSON.stringify(keyStore);
     const keyDoc = {
-      keyStore: keyStore,
+      keyStore: keyStoreString,
       kid: keyDocumentInstance.id
     }
     // 保存文档
@@ -131,8 +132,9 @@ async function updateKey(jsonData, password) {
     // 将 JSON 转换为字符串
     const jsonString = JSON.stringify(keyDocumentInstance);
     const keyStore = keystore.create(jsonString, password)
+    const keyStoreString = JSON.stringify(keyStore);
     const keyDoc = {
-      keyStore: keyStore,
+      keyStore: keyStoreString,
       kid: keyDocumentInstance.id
     }
 
@@ -199,7 +201,7 @@ async function getKey(kid, password) {
     const queriedDocument = await keyDocumentRepository.findOne({ where: { kid } });
 
     if (queriedDocument) {
-      const keyStore = queriedDocument.keyStore;
+      let  keyStore = queriedDocument.keyStore;
       if (typeof keyStore === 'string') {
         keyStore = JSON.parse(keyStore)
       }
@@ -375,4 +377,6 @@ async function listKeys(pageStart, pageSize) {
   }
 }
 
-export { importKey, updateKey, getKey, deleteKey, listKeys };
+// export { importKey, updateKey, getKey, deleteKey, listKeys };
+
+module.exports = { importKey, updateKey, getKey, deleteKey, listKeys };

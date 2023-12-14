@@ -5,22 +5,22 @@ class DidDocumentEntity {
   @PrimaryGeneratedColumn()
   id;
 
-  @Column({ type: 'json', nullable: true })
+  @Column({ type: 'text', nullable: true })
   context;
 
   @Column({ type: 'text', nullable: true })
   did;
 
-  @Column({ type: 'json', nullable: true })
+  @Column({ type: 'text', nullable: true })
   verificationMethod;
 
-  @Column({ type: 'json', nullable: true })
+  @Column({ type: 'text', nullable: true })
   authentication;
 
-  @Column({ type: 'json', nullable: true })
+  @Column({ type: 'text', nullable: true })
   extension;
 
-  @Column({ type: 'json', nullable: true })
+  @Column({ type: 'text', nullable: true })
   service;
 
   @Column({ type: 'text', nullable: true })
@@ -29,10 +29,10 @@ class DidDocumentEntity {
   @Column({ type: 'text', nullable: true })
   updated;
 
-  @Column({ type: 'json', nullable: true })
+  @Column({ type: 'text', nullable: true })
   proof;
 }
 
-// module.exports = { DidDocumentEntity };
+module.exports = { DidDocumentEntity };
 
-export { DidDocumentEntity };
+// export { DidDocumentEntity };

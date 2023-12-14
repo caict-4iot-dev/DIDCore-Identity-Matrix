@@ -5,7 +5,7 @@ class KeyDocumentEntity {
   @PrimaryGeneratedColumn()
   id;
 
-  @Column({ type: 'json', nullable: false })
+  @Column({ type: 'text', nullable: false })
   keyStore;
 
   @Column({ type: 'text', nullable: false })
@@ -13,4 +13,5 @@ class KeyDocumentEntity {
 
 }
 
-export { KeyDocumentEntity };
+// export { KeyDocumentEntity };
+module.exports = { KeyDocumentEntity };

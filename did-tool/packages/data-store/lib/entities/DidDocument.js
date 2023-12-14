@@ -14,33 +14,34 @@
 
     toEntity() {
         return {
-          context: this['@context'],
+          context: JSON.stringify(this['@context']),
           did: this.id,
-          verificationMethod: this.verificationMethod,
-          authentication: this.authentication,
+          verificationMethod: JSON.stringify(this.verificationMethod),
+          authentication: JSON.stringify(this.authentication),
           extension: JSON.stringify(this.extension),
-          service: this.service,
+          service: JSON.stringify(this.service),
           created: this.created,
           updated: this.updated,
-          proof: this.proof ,
+          proof: JSON.stringify(this.proof) ,
         };
     }
 
     static fromEntity(entity) {
         const didDocument = new DidDocument({
-            '@context': entity.context,
+            '@context': JSON.parse(entity.context),
             id: entity.did,
-            verificationMethod: entity.verificationMethod,
-            authentication: entity.authentication,
+            verificationMethod: JSON.parse(entity.verificationMethod),
+            authentication: JSON.parse(entity.authentication),
             extension: JSON.parse(entity.extension),
-            service: entity.service,
+            service: JSON.parse(entity.service),
             created: entity.created,
             updated: entity.updated,
-            proof: entity.proof ,
+            proof: JSON.parse(entity.proof) ,
         });
         return didDocument;
     }
   }
 
-  export { DidDocument };
+  // export { DidDocument };
+  module.exports = { DidDocument };
   
