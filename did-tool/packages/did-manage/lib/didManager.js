@@ -1,24 +1,23 @@
-const { importDID, updateDID, getDID, deleteDID, listDIDs } = require('../../data-store/lib/didStore.js');
+const { importDID, updateDID, getDID, deleteDID } = require('../../data-store/lib/didStore.js');
 
 
 async function formatJson(jsonData) {
   const dateTimeString = new Date().toISOString().slice(0, -1) + 'Z';
-    console.log(dateTimeString);
-    const didDocument = {
-      "@context": [
-        "https://www.w3.org/ns/did/v1",
-        "https://w3id.org/security/suites/ed25519-2020/v1"
-      ],
-      id: jsonData.did,
-      verificationMethod: jsonData.keys,
-      authentication: jsonData.authentication,
-      extension: jsonData.extension,
-      service: jsonData.service,
-      created: dateTimeString,
-      updated: dateTimeString,
-      proof: jsonData.proof
-    };
-    return didDocument;
+  const didDocument = {};
+  didDocument['@context'] = [
+    "https://www.w3.org/ns/did/v1",
+    "https://w3id.org/security/suites/ed25519-2020/v1"
+  ];
+  didDocument.id = jsonData.did;
+  didDocument.verificationMethod = jsonData.keys;
+  didDocument.authentication = jsonData.authentication;
+  didDocument.extension = jsonData.extension;
+  didDocument.service = jsonData.services?jsonData.services:[];
+  didDocument.created = dateTimeString;
+  didDocument.updated = dateTimeString;
+  didDocument.proof = jsonData.proof?jsonData.proof:{};
+  
+  return didDocument;
 }
 
 //创建
@@ -92,7 +91,9 @@ async function didManagerImport(jsonData) {
 
   try {
     
-    const didDocument = formatJson(jsonData);
+    const didDocument = await formatJson(jsonData);
+
+    console.log('didDocument:', didDocument);
     const saveDidDocument = importDID(didDocument);
     return saveDidDocument;
 
@@ -111,7 +112,7 @@ async function didManagerImport(jsonData) {
 async function didManagerUpdate(jsonData) {
 
   try {
-    const didDocument = formatJson(jsonData);
+    const didDocument = await formatJson(jsonData);
     const updateDidDocument = updateDID(didDocument)
     return updateDidDocument;
 
@@ -231,7 +232,7 @@ async function didManagerAddService(did, jsonData) {
 }
 
 //指定 DID 添加一个service
-async function didManagerRemoveService(did, jsonData) {
+async function didManagerRemoveService(did, id) {
 
   try {
     
@@ -253,7 +254,6 @@ async function didManagerRemoveService(did, jsonData) {
 
   } 
 }
-// export { importDID, updateDID, getDID, deleteDID, listDIDs };
 
 module.exports = { didManagerCreate, didManagerImport, didManagerUpdate, didManagerDelete, didManageraddKey, didManagerRemoveKey, didManagerFind, didManagerAddService, didManagerRemoveService };
 
