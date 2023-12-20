@@ -1,4 +1,4 @@
-import PluginInterface from './plugin-interface.js';
+import PluginInterface from './plugin-interface.mjs';
 
 class MainApplication {
   constructor() {
