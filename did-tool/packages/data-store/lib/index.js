@@ -1,25 +1,21 @@
 import { didStore } from './didStore.js';
-// import { keyStoreManager } from './keyStoreManager.js';
-import PluginInterface from '../../tool/plugin-interface.mjs';
+import PluginInterface from 'tool/plugin-interface.js';
 
 export class DidStore extends PluginInterface {
     static async ImportDID(jsonData) {
-        console.log("jsonData:", jsonData)
-        let k;
-        k = await didStore.importDID({ jsonData });
-        return k
+        return await didStore.importDID({ jsonData });
     }
-    GetDID({ did } = {}) {
-        return didStore.getDID({ did });
+    static async GetDID( did ) {
+        return await didStore.getDID({ did });
     }
-    UpdateDID({ jsonData } = {}) {
-        return didStore.updateDID({ jsonData });
+    static async UpdateDID({ jsonData } = {}) {
+        return await didStore.updateDID({ jsonData });
     }
-    DeleteDID({ bid } = {}) {
-        return didStore.deleteDID({ bid });
+    static async DeleteDID({ bid } = {}) {
+        return await didStore.deleteDID({ bid });
     }
-    ListDIDs({ pageStart, pageSize } = {}) {
-        return didStore.listDIDs({ pageStart, pageSize });
+    static async ListDIDs({ pageStart, pageSize } = {}) {
+        return await didStore.listDIDs({ pageStart, pageSize });
     }
 }
 // export class KeyStoreManager extends PluginInterface {

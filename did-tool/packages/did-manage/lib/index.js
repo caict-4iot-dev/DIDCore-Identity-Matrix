@@ -1,5 +1,5 @@
 import { didManager } from './didManager.js';
-import PluginInterface from '../../tool/plugin-interface.mjs';
+import PluginInterface from 'tool/plugin-interface.js';
 
 export class DidManager extends PluginInterface {
     static async DidManagerCreate() {

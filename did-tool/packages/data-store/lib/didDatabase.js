@@ -10,7 +10,7 @@ db.serialize(() => {
     CREATE TABLE IF NOT EXISTS did_documents (
          id TEXT PRIMARY KEY,
          context TEXT,
-         verification TEXT,
+         verificationMethod TEXT,
          authentication TEXT,
          extension TEXT,
          service TEXT,

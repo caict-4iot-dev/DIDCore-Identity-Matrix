@@ -9,7 +9,7 @@ describe('didStore Test', () => {
 
   // 正常JSON数据
   const jsonData = {
-    "did": "did:fake:receiverWithMediation4",
+    "did": "did:fake:receiverWithMediation5",
     "keys": [
       {
         "type": "Ed25519",
