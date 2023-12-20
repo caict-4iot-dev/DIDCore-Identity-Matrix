@@ -1,4 +1,4 @@
-const { Entity, Column, PrimaryGeneratedColumn } = require('typeorm');
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'did_document' })
 class DidDocumentEntity {

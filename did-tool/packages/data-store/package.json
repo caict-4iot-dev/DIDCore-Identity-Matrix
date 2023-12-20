@@ -5,8 +5,7 @@
     "brdc-sjcl": "^1.1.0",
     "crypto-js": "^4.2.0",
     "sqlite3": "^5.0.2",
-    "typeorm": "^0.2.39",
-    "typescript": "^4.5.5"
+    "typeorm": "^0.2.39"
   },
   "publishConfig": {
     "access": "public"
@@ -26,60 +25,14 @@
   ],
   "license": "Apache-2.0",
   "type": "commonjs",
+  "main": "index.js",
   "moduleDirectories": [
     "node_modules",
     "lib"
   ],
-  "scripts": {
-    "test": "jest"
-  },
-  "jest": {
-    "testEnvironment": "node",
-    "testRegex": "(/_tests_/.*|(\\.|/)(test|spec))\\.js$",
-    "moduleFileExtensions": [
-      "js",
-      "json",
-      "node"
-    ],
-    "transform": {
-      "^.+\\.jsx?$": "babel-jest"
-    },
-    "transformIgnorePatterns": [
-      "/node_modules/"
-    ]
-  },
-  "babel": {
-    "presets": [
-      [
-        "@babel/preset-env",
-        {
-          "targets": {
-            "node": "current"
-          }
-        }
-      ]
-    ],
-    "plugins": [
-      [
-        "@babel/plugin-proposal-decorators",
-        {
-          "legacy": true
-        }
-      ],
-      [
-        "@babel/plugin-proposal-class-properties",
-        {
-          "loose": true
-        }
-      ]
-    ]
-  },
   "devDependencies": {
-    "@babel/core": "^7.0.0",
-    "@babel/node": "^7.0.0",
-    "@babel/plugin-proposal-class-properties": "^7.0.0",
-    "@babel/plugin-proposal-decorators": "^7.0.0",
-    "@babel/preset-env": "^7.0.0",
-    "jest": "^29.7.0"
+    "@typescript-eslint/eslint-plugin": "^6.15.0",
+    "@typescript-eslint/parser": "^6.15.0",
+    "eslint": "^8.56.0"
   }
 }

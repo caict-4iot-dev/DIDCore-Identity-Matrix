@@ -1,4 +1,4 @@
-const { Entity, Column, PrimaryGeneratedColumn } = require('typeorm');
+import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'key_document' })
 class KeyDocumentEntity {
@@ -13,5 +13,4 @@ class KeyDocumentEntity {
 
 }
 
-// export { KeyDocumentEntity };
 module.exports = { KeyDocumentEntity };
