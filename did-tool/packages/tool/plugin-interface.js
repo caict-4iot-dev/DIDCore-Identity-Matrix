@@ -5,9 +5,9 @@ class PluginInterface {
     }
   }
 
-  executeMethod(methodName, ...params) {
+   executeMethod(methodName, ...params) {
     if (typeof this[methodName] === 'function') {
-      this[methodName](...params);
+      return this[methodName](...params);
     } else {
       console.error(`Method ${methodName} not implemented by the plugin`);
     }

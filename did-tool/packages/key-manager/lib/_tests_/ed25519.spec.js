@@ -1,5 +1,5 @@
 import chai from 'chai';
-import {Ed25519VerificationKey2020} from '../index.js';
+import {Ed25519VerificationKey2020} from '../innerIndex.js';
 import * as base58btc from 'base58-universal';
 const should = chai.should();
 const {expect} = chai;
@@ -87,7 +87,7 @@ describe('sign verify', () => {
 
         expect(
             await keyPair2020.verifier()
-                .verify({data2, signature: signatureBytes2020})
+                .verify({data, signature: signatureBytes2020})
         ).to.be.true;
     });
 });
