@@ -1,5 +1,5 @@
 
-const { createVerifiableCredentialJwt } = require('did-jwt-vc')
+const { createVerifiableCredentialJwt, createVerifiablePresentationJwt } = require('did-jwt-vc');
 
 async function generateJWT() {
 
@@ -12,33 +12,31 @@ async function generateJWT() {
     };
 
     const vcPayload = {
-        exp: 1702745280,
-        vc: {
-          '@context': ['https://www.w3.org/2018/credentials/v1'],
-          type: ['VerifiableCredential'],
-          credentialSubject: {
-            firstName: '郭',
-            lastName: '世杰',
-            email: '949552983@qq.com',
-            type: 'Sphereon Guest',
-            id: ''
-          }
-        },
+      exp: 1702745280,
+      vc: {
         '@context': ['https://www.w3.org/2018/credentials/v1'],
         type: ['VerifiableCredential'],
-        expirationDate: '2023-12-20T15:22:20.383Z',
         credentialSubject: {
           firstName: '郭',
           lastName: '世杰',
           email: '949552983@qq.com',
           type: 'Sphereon Guest',
           id: ''
-        },
-        issuer: 'did:key:z6Mkk2U8pdcHkdzKVBtLmCYYPAAGmrZ93LUSTKDrVp9uQzYu',
-        issuanceDate: '2023-12-18T15:22:20.383Z',
-        sub: ''
-    };
-
+        }
+      },
+      '@context': ['https://www.w3.org/2018/credentials/v1'],
+      type: ['VerifiableCredential'],
+      credentialSubject: {
+        firstName: '郭',
+        lastName: '世杰',
+        email: '949552983@qq.com',
+        type: 'Sphereon Guest',
+        id: 'id'
+      },
+      issuer: 'did:key:z6Mkk2U8pdcHkdzKVBtLmCYYPAAGmrZ93LUSTKDrVp9uQzYu',
+      time: '2023-12-18T15:22:20.383Z',
+      sub: 'sub'
+    }
     const vcJwt = await createVerifiableCredentialJwt(vcPayload, issuer);
 
     return vcJwt
