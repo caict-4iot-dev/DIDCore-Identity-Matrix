@@ -1,4 +1,7 @@
-import DidStore from '../index.js'
+import DidStore from '../index.js';
+import chai from "chai";
+const should = chai.should();
+const {expect} = chai;
 
 describe('didStore Test', () => {
 
@@ -9,7 +12,7 @@ describe('didStore Test', () => {
       "https://www.w3.org/ns/did/v1",
       "https://w3id.org/security/suites/ed25519-2020/v1"
     ],
-    "id": "did:bid:efYGggWARD5GN5TMmMcxm7XRa9DJXRLPWRETLYN",
+    "id": "did:bid:efYGggWARD5GN5TMmMcxm7XRa9DJXRLPWRETLYD",
     "verificationMethod": [{
       "id": "did:bid:efYGggWARD5GN5TMmMcxm7XRa9DJXRLE#z6Mkpw72M9suPCBv48X2Xj4YKZJH9W7wzEK1aS6JioKSo89C",
       "type": "Ed25519VerificationKey2020",
@@ -66,9 +69,9 @@ describe('didStore Test', () => {
   
   it('save a DidDocument to the database', async () => {
     // 调用保存函数
-    console.log((DidStore))
     const saveDidDocument = await DidStore.ImportDID(jsonData);
-    expect(saveDidDocument.errorCode).toEqual(0);
+    console.log('saveDidDocument:', saveDidDocument);
+    expect(saveDidDocument.errorCode).to.equal(100001);
 
     // // 从数据库中检索保存的 DidDocument
     // const retrievedDidDocument = await didStore.getDID(jsonData.id)

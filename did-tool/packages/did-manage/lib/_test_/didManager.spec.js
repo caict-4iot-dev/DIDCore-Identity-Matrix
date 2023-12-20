@@ -1,5 +1,9 @@
 // const { didManagerCreate, didManagerImport, didManagerUpdate, didManagerDelete, didManageraddKey, didManagerRemoveKey, didManagerFind, didManagerAddService, didManagerRemoveService } = require('../didManager.js');
-import DidManager from '../index.js'
+import DidManager from '../index.js';
+import chai from "chai";
+const should = chai.should();
+const {expect} = chai;
+
 describe('didStore Test', () => {
 
 
@@ -52,12 +56,17 @@ describe('didStore Test', () => {
   };
 
   
-  // test('didManagerCreate test', async () => {
   it('didManagerCreate test', async () => {
     // 调用保存函数
-    const didDocumentCreate = await DidManager.DidManagerCreate(jsonData);
-    expect(didDocumentCreate.errorCode).toEqual(0);
+    const didDocumentCreate = await DidManager.DidManagerCreate();
+    expect(didDocumentCreate.errorCode).to.equal(0);
   });
+
+    it('didManagerImport test', async () => {
+        // 调用保存函数
+        const didDocumentImport = await DidManager.DidManagerImport({jsonData});
+        expect(didDocumentImport.errorCode).to.equal(0);
+    });
 
   // test('save a DidDocument', async () => {
   //   // 调用保存函数

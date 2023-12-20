@@ -1,12 +1,12 @@
 import { didManager } from './didManager.js';
-import PluginInterface from '../../tool/plugin-interface.js';
+import PluginInterface from '../../tool/plugin-interface.mjs';
 
 export class DidManager extends PluginInterface {
-    async DidManagerCreate() {
+    static async DidManagerCreate() {
         return await didManager.didManagerCreate();
     }
-    DidManagerImport({ jsonData } = {}) {
-        return didManager.didManagerImport({ jsonData });
+    static async DidManagerImport({ jsonData } = {}) {
+        return await didManager.didManagerImport(jsonData );
     }
     DidManagerUpdate({ jsonData } = {}) {
         return didManager.didManagerUpdate({ jsonData });
@@ -30,3 +30,5 @@ export class DidManager extends PluginInterface {
         return didManager.didManagerRemoveService({ bid, id });
     }
 }
+
+export default DidManager

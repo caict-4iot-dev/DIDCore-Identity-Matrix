@@ -5,7 +5,7 @@
     "brdc-sjcl": "^1.1.0",
     "crypto-js": "^4.2.0",
     "sqlite3": "^5.0.2",
-    "typeorm": "^0.2.39"
+    "tool": "workspace:^"
   },
   "publishConfig": {
     "access": "public"
@@ -24,15 +24,9 @@
     "did-plugin"
   ],
   "license": "Apache-2.0",
-  "type": "commonjs",
-  "main": "index.js",
+  "type": "module",
   "moduleDirectories": [
     "node_modules",
     "lib"
-  ],
-  "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^6.15.0",
-    "@typescript-eslint/parser": "^6.15.0",
-    "eslint": "^8.56.0"
-  }
+  ]
 }

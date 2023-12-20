@@ -1,4 +1,4 @@
-import {didStore} from '../../data-store/lib/index.js';
+import {DidStore} from '../../data-store/lib/index.js';
 
 export class didManager {
 
@@ -93,9 +93,8 @@ export class didManager {
     try {
 
       const didDocument = await this.formatJson(jsonData);
-
-      console.log('didDocument:', didDocument);
-      const saveDidDocument = didStore.importDID(didDocument);
+      console.log("didDocument:", didDocument);
+      const saveDidDocument = DidStore.ImportDID(didDocument);
       return saveDidDocument;
 
     } catch (error) {
