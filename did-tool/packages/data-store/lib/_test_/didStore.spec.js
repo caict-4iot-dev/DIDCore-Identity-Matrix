@@ -12,7 +12,7 @@ describe('didStore Test', () => {
       "https://www.w3.org/ns/did/v1",
       "https://w3id.org/security/suites/ed25519-2020/v1"
     ],
-    "id": "did:bid:efYGggWARD5GN5TMmMcxm7XRa9DJXRLPWRETLYD",
+    "id": "did:bid:efYGggWARD5GN5TMmMcxm7XRa9DJXRLPWRETLYC",
     "verificationMethod": [{
       "id": "did:bid:efYGggWARD5GN5TMmMcxm7XRa9DJXRLE#z6Mkpw72M9suPCBv48X2Xj4YKZJH9W7wzEK1aS6JioKSo89C",
       "type": "Ed25519VerificationKey2020",
@@ -70,19 +70,25 @@ describe('didStore Test', () => {
   it('save a DidDocument to the database', async () => {
     // 调用保存函数
     const saveDidDocument = await DidStore.ImportDID(jsonData);
-    console.log('saveDidDocument:', saveDidDocument);
-    expect(saveDidDocument.errorCode).to.equal(100001);
+    expect(saveDidDocument.errorCode).to.equal(0);
 
-    // // 从数据库中检索保存的 DidDocument
-    // const retrievedDidDocument = await didStore.getDID(jsonData.id)
-    //
-    // // 断言检索到的 DidDocument 是否与保存的 DidDocument 一致
-    // expect(retrievedDidDocument.data.didDocument).toEqual(jsonData);
-    //
-    // // 调用保存函数重复
-    // const saveDidDocumentDuplicate  = await didStore.importDID(jsonData);
-    // expect(saveDidDocumentDuplicate.errorCode).toEqual(100001);
 });
+
+  it('save a DidDocument for Duplicate BID', async () => {
+    // 调用保存函数重复
+    const saveDidDocumentDuplicate  = await DidStore.ImportDID(jsonData);
+    expect(saveDidDocumentDuplicate.errorCode).to.equal(100001);
+  });
+
+  it('get DidDocument for BID', async () => {
+
+    // 从数据库中检索保存的 DidDocument
+    const retrievedDidDocument = await DidStore.GetDID(jsonData.id)
+    console.log('retrievedDidDocument:', retrievedDidDocument.data.didDocument);
+    // 断言
+    expect(retrievedDidDocument.errorCode).to.equal(0);
+
+  });
 
 //   test('save a DidDocument for Document format error', async () => {
     
@@ -119,14 +125,16 @@ describe('didStore Test', () => {
 
 //   });
 
-//   test('delete DidDocument for BID', async () => {
-
-//     // 从数据库中检索保存的 DidDocument
-//     const retrievedDidDocument = await deleteDID(jsonData.id)
-//     // 断言
-//     expect(retrievedDidDocument.errorCode).toEqual(0);
-
-//   });
+  // it('delete DidDocument for BID', async () => {
+  //
+  //   // 从数据库中检索保存的 DidDocument
+  //   const retrievedDidDocument = await DidStore.DeleteDID(jsonData.id)
+  //
+  //   console.log('retrievedDidDocument:', retrievedDidDocument);
+  //   // 断言
+  //   expect(retrievedDidDocument.errorCode).to.equal(0);
+  //
+  // });
   
 //   test('update a DidDocument for the document does not exist error', async () => {
 

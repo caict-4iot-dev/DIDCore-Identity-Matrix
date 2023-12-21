@@ -1,5 +1,6 @@
+import DidStore from "../index.js";
 
-  class DidDocument {
+class DidDocument {
     constructor(data) {
         this['@context'] = data['@context'] || [];
         this.id = data['id'] || '';
@@ -14,8 +15,8 @@
 
     toEntity() {
         return {
+          id: this.id,
           context: JSON.stringify(this['@context']),
-          did: this.id,
           verificationMethod: JSON.stringify(this.verificationMethod),
           authentication: JSON.stringify(this.authentication),
           extension: JSON.stringify(this.extension),
@@ -29,7 +30,7 @@
     static fromEntity(entity) {
         const didDocument = new DidDocument({
             '@context': JSON.parse(entity.context),
-            id: entity.did,
+            id: entity.id,
             verificationMethod: JSON.parse(entity.verificationMethod),
             authentication: JSON.parse(entity.authentication),
             extension: JSON.parse(entity.extension),
@@ -43,5 +44,5 @@
   }
 
   // export { DidDocument };
-  module.exports = { DidDocument };
+    export default DidDocument;
   

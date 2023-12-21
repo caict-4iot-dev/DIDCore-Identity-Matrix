@@ -1,4 +1,4 @@
-import {DidStore} from '../../data-store/lib/index.js';
+import {DidStore} from 'data-store/lib/index.js';
 
 export class didManager {
 
