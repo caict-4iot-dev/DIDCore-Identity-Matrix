@@ -1,383 +1,286 @@
-// import { createConnection } from 'typeorm';
-// import { KeyDocumentEntity } from './entities/KeyDocumentEntity.js';
-// import {KeyDocument} from './entities/KeyDocument.js'
-// import {keystore} from './keystore.js'
-//
-// export class keyStoreManager {
-//
-//   static async validateAuthenticationContext(keyDocumentInstance) {
-//
-//     const fields = ['id', 'controller', 'publicKeyMultibase'];
-//     for (const field of fields) {
-//       if (!keyDocumentInstance[field] || keyDocumentInstance[field].length === 0) {
-//         return false;
-//       }
-//     }
-//     return true;
-//   }
-//
-// //保存
-//   static async importKey({jsonData} = {}) {
-//
-//     if (!password || password.length === 0) {
-//       return {
-//         errorCode: 200004,
-//         message: 'Password does not exist',
-//       };
-//     }
-//     const keyDocumentInstance = new KeyDocument(jsonData);
-//     // 格式校验
-//     if(!await this.validateAuthenticationContext(keyDocumentInstance)){
-//       return {
-//         errorCode: 100002,
-//         message: 'Document format error',
-//       };
-//     }
-//
-//     let connection;
-//
-//     try {
-//       // 创建数据库连接
-//       connection = await createConnection({
-//         type: 'sqlite',
-//         database: 'key_document.sqlite',
-//         synchronize: true,
-//         logging: true,
-//         entities: [
-//           KeyDocumentEntity
-//         ],
-//       });
-//
-//       // 加载实体的元数据
-//       await connection.synchronize();
-//
-//       // 加载仓库
-//       const keyDocumentRepository = connection.getRepository(KeyDocumentEntity);
-//
-//       // 校验kid是否重复
-//       const kid = keyDocumentInstance.id;
-//       const queriedDocument = await keyDocumentRepository.findOne({ where: { kid } });
-//       if (queriedDocument) {
-//         return {
-//           errorCode: 200001,
-//           message: 'Duplicate key ID for the document',
-//         };
-//       };
-//       // 将 JSON 转换为字符串
-//       const jsonString = JSON.stringify(keyDocumentInstance);
-//       const keyStore = keystore.create(jsonString, password);
-//       const keyStoreString = JSON.stringify(keyStore);
-//       const keyDoc = {
-//         keyStore: keyStoreString,
-//         kid: keyDocumentInstance.id
-//       }
-//       // 保存文档
-//       await keyDocumentRepository.save(keyDoc);
-//
-//       return {
-//         errorCode: 0,
-//         message: 'SUCCESS',
-//       };
-//
-//     } catch (error) {
-//       console.log('Error connecting to the database:', error);
-//
-//       throw {
-//         errorCode: 400000,
-//         message: 'System error',
-//       };
-//
-//     } finally {
-//       // 最后，确保关闭数据库连接
-//       if (connection) {
-//         await connection.close();
-//       }
-//     }
-//   }
-// //修改
-//   static async updateKey({jsonData, password} = {}) {
-//
-//     if (!password || password.length === 0) {
-//       return {
-//         errorCode: 200004,
-//         message: 'Password does not exist',
-//       };
-//     }
-//     const keyDocumentInstance = new KeyDocument(jsonData);
-//     // 格式校验
-//     if(!await validateAuthenticationContext(keyDocumentInstance)){
-//       return {
-//         errorCode: 100002,
-//         message: 'Document format error',
-//       };
-//     }
-//
-//     let connection;
-//
-//     try {
-//       // 创建数据库连接
-//       connection = await createConnection({
-//         type: 'sqlite',
-//         database: 'key_document.sqlite',
-//         synchronize: true,
-//         logging: true,
-//         entities: [
-//           KeyDocumentEntity
-//         ],
-//       });
-//
-//       // 加载实体的元数据
-//       await connection.synchronize();
-//
-//       // 加载仓库
-//       const keyDocumentRepository = connection.getRepository(KeyDocumentEntity);
-//
-//       // 将 JSON 转换为字符串
-//       const jsonString = JSON.stringify(keyDocumentInstance);
-//       const keyStore = keystore.create(jsonString, password)
-//       const keyStoreString = JSON.stringify(keyStore);
-//       const keyDoc = {
-//         keyStore: keyStoreString,
-//         kid: keyDocumentInstance.id
-//       }
-//
-//       const result = await keyDocumentRepository.update({ kid: keyDocumentInstance.id }, keyDoc);
-//       if(result.affected > 0){
-//         return {
-//           errorCode: 0,
-//           message: 'SUCCESS',
-//         };
-//       }else{
-//         return {
-//           errorCode: 200003,
-//           message: 'Key ID for the document does not exist',
-//         };
-//       }
-//
-//
-//     } catch (error) {
-//       console.log('Error connecting to the database:', error);
-//
-//       throw {
-//         errorCode: 400000,
-//         message: 'System error',
-//       };
-//
-//     } finally {
-//       // 最后，确保关闭数据库连接
-//       if (connection) {
-//         await connection.close();
-//       }
-//     }
-//   }
-//
-// // 根据 kid 查询数据并返回
-//   static async getKey({kid, password} = {}) {
-//     if (!password || password.length === 0) {
-//       return {
-//         errorCode: 200004,
-//         message: 'Password does not exist',
-//       };
-//     }
-//
-//     let connection;
-//
-//     try {
-//       // 创建数据库连接
-//       connection = await createConnection({
-//         type: 'sqlite',
-//         database: 'key_document.sqlite',
-//         synchronize: true,
-//         logging: true,
-//         entities: [
-//           KeyDocumentEntity
-//         ],
-//       });
-//
-//       // 加载实体的元数据
-//       await connection.synchronize();
-//
-//       // 返回仓库
-//       const keyDocumentRepository = connection.getRepository(KeyDocumentEntity);
-//
-//       // 根据 kid 查询文档
-//       const queriedDocument = await keyDocumentRepository.findOne({ where: { kid } });
-//
-//       if (queriedDocument) {
-//         let  keyStore = queriedDocument.keyStore;
-//         if (typeof keyStore === 'string') {
-//           keyStore = JSON.parse(keyStore)
-//         }
-//         const keyDocumentInstance = keystore.imported(keyStore, password)
-//
-//         if(!keyDocumentInstance) {
-//           return {
-//             errorCode: 200005,
-//             message: 'Password error'
-//           };
-//         }
-//         const parsedObject = JSON.parse(keyDocumentInstance);
-//
-//         return {
-//           errorCode: 0,
-//           message: 'SUCCESS',
-//           data: {
-//             KeyDocument: parsedObject
-//           }
-//         };
-//       }else{
-//         return {
-//           errorCode: 200003,
-//           message: 'Key ID for the document does not exist'
-//         };
-//       }
-//
-//     } catch (error) {
-//       console.log('Error connecting to the database:', error);
-//
-//       // 根据错误类型设置不同的错误码和消息
-//       let errorCode, errorMessage;
-//       errorCode = 400000; // 系统错误
-//       errorMessage = 'System error';
-//
-//       throw {
-//         errorCode,
-//         message: errorMessage,
-//       };
-//
-//     } finally {
-//       // 最后，确保关闭数据库连接
-//       if (connection) {
-//         await connection.close();
-//       }
-//     }
-//   }
-//
-//
-// // 根据 kid 删除数据
-//   static async deleteKey({kid} = {}) {
-//     let connection;
-//
-//     try {
-//       // 创建数据库连接
-//       connection = await createConnection({
-//         type: 'sqlite',
-//         database: 'key_document.sqlite',
-//         synchronize: true,
-//         logging: true,
-//         entities: [
-//           KeyDocumentEntity
-//         ],
-//       });
-//
-//       // 加载实体的元数据
-//       await connection.synchronize();
-//
-//       // 返回仓库
-//       const keyDocumentRepository = connection.getRepository(KeyDocumentEntity);
-//
-//       // 使用 delete 方法删除记录
-//       const result = await keyDocumentRepository.delete({ kid: kid });
-//
-//       if(result.affected > 0){
-//         return {
-//           errorCode: 0,
-//           message: 'SUCCESS',
-//         };
-//       }else{
-//         return {
-//           errorCode: 100003,
-//           message: 'BID for the document does not exist',
-//         };
-//       }
-//
-//     } catch (error) {
-//       console.log('Error connecting to the database:', error);
-//
-//       // 根据错误类型设置不同的错误码和消息
-//       let errorCode, errorMessage;
-//       errorCode = 400000; // 系统错误
-//       errorMessage = 'System error';
-//
-//       throw {
-//         errorCode,
-//         message: errorMessage,
-//       };
-//
-//     } finally {
-//       // 最后，确保关闭数据库连接
-//       if (connection) {
-//         await connection.close();
-//       }
-//     }
-//   }
-//
-//
-// // 根据 kid 查询数据并返回
-//   static async listKeys({pageStart, pageSize} = {}) {
-//     let connection;
-//
-//     try {
-//       // 创建数据库连接
-//       connection = await createConnection({
-//         type: 'sqlite',
-//         database: 'key_document.sqlite',
-//         synchronize: true,
-//         logging: true,
-//         entities: [
-//           KeyDocumentEntity
-//         ],
-//       });
-//
-//       // 加载实体的元数据
-//       await connection.synchronize();
-//
-//       // 返回仓库
-//       const keyDocumentRepository = connection.getRepository(KeyDocumentEntity);
-//
-//       pageStart = pageStart?pageStart:1;
-//       pageSize = pageSize?pageSize:1000;
-//       // 计算分页偏移量
-//       const offset = (pageStart - 1) * pageSize;
-//
-//       // 使用 createQueryBuilder 构建自定义查询
-//       const queryBuilder = keyDocumentRepository.createQueryBuilder('KeyDocument')
-//           .select(['KeyDocument.kid']) // 只选择 kid 字段
-//           .offset(offset)
-//           .limit(pageSize);
-//
-//
-//       // 执行查询
-//       const [results, totalCount] = await Promise.all([
-//         queryBuilder.getMany(),
-//         queryBuilder.getCount(),
-//       ]);
-//       const kids = results.map(result => result.kid);
-//       return {
-//         errorCode: 0,
-//         message: 'SUCCESS',
-//         page: {
-//           pageStart: pageStart,
-//           pageSize: pageSize,
-//           pageTotal: totalCount
-//         },
-//         dataList: kids
-//       };
-//
-//     } catch (error) {
-//       console.log('Error connecting to the database:', error);
-//
-//       throw {
-//         errorCode: 400000,
-//         message: 'System error',
-//       };
-//
-//     } finally {
-//       // 最后，确保关闭数据库连接
-//       if (connection) {
-//         await connection.close();
-//       }
-//     }
-//   }
-// }
-//
+import kdb from './keyDatabase.js';
+import {keystore} from './keystore.js'
+
+export class keyStoreManager {
+
+    static async validateAuthenticationContext(keyDocumentInstance) {
+
+        const fields = ['id', 'controller', 'publicKeyMultibase'];
+        for (const field of fields) {
+            if (!keyDocumentInstance[field] || keyDocumentInstance[field].length === 0) {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+    static async formatKeyStore(jsonData, password) {
+
+        const jsonString = JSON.stringify(jsonData);
+        const keyStore = await keystore.create(jsonString, password);
+        const keyStoreString = JSON.stringify(keyStore);
+        return keyStoreString;
+    }
+
+    static async runAsync(query, ...params) {
+        return new Promise((resolve, reject) => {
+            kdb.run(query, ...params, function (err) {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve({ lastID: this.lastID, changes: this.changes });
+                }
+            });
+        });
+    }
+    //保存
+    static async importKey({jsonData, password} = {}) {
+
+        try {
+            if (!password || password.length === 0) {
+                return {
+                    errorCode: 200004,
+                    message: 'Password does not exist',
+                };
+            }
+            // 格式校验
+            if(!await this.validateAuthenticationContext(jsonData)){
+                return {
+                    errorCode: 100002,
+                    message: 'Document format error',
+                };
+            }
+
+            // 将 JSON 转换为字符串
+            const keyStoreString = await this.formatKeyStore(jsonData, password);
+
+            // 将 JSON 数据插入数据库
+            const insertQuery  = `INSERT INTO key_documents VALUES ( ?, ? )`;
+
+            // 执行插入操作
+            await this.runAsync(
+                insertQuery,
+                jsonData.id, keyStoreString
+            );
+            return {
+                errorCode: 0,
+                message: 'SUCCESS',
+            };
+        } catch (error) {
+            console.log('Error connecting to the database:', error);
+            // 根据错误类型设置不同的错误码和消息
+            let errorCode, errorMessage;
+            if (error.errno === 19) {
+                errorCode = 200001; // 文档的BID重复
+                errorMessage = 'Duplicate key ID for the document';
+            } else {
+                errorCode = 400000; // 系统错误
+                errorMessage = 'System error';
+            }
+            return {
+                errorCode: errorCode,
+                message: errorMessage,
+            };
+
+        }
+    }
+    //修改
+    static async updateKey({jsonData, password} = {}) {
+        try {
+            if (!password || password.length === 0) {
+                return {
+                    errorCode: 200004,
+                    message: 'Password does not exist',
+                };
+            }
+            // 格式校验
+            if(!await this.validateAuthenticationContext(jsonData)){
+                return {
+                    errorCode: 100002,
+                    message: 'Document format error',
+                };
+            }
+
+            // 将 JSON 转换为字符串
+            const keyStoreString = await this.formatKeyStore(jsonData, password);
+
+            // 构建 UPDATE 查询
+            const updateQuery = `UPDATE key_documents SET keyStore = ? WHERE id = ?`;
+
+            // 执行插入操作
+            const result = await this.runAsync(
+                updateQuery,
+                keyStoreString, jsonData.id
+            );
+
+            if(result && result.changes > 0){
+                return {
+                    errorCode: 0,
+                    message: 'SUCCESS',
+                };
+
+            }else{
+                return {
+                    errorCode: 200003,
+                    message: 'Key ID for the document does not exist',
+                };
+            }
+        } catch (error) {
+            console.log('Error connecting to the database:', error);
+
+            return {
+                errorCode: 400000,
+                message: 'System error',
+            };
+
+        }
+    }
+
+    // 根据 Key 查询数据并返回
+    static async getKey({kid, password} = {}) {
+
+        try {
+            if (!password || password.length === 0) {
+                return {
+                    errorCode: 200004,
+                    message: 'Password does not exist',
+                };
+            }
+            // 根据 Key 查询文档
+            const query  = `SELECT * FROM key_documents WHERE id = ?`;
+
+            // 执行查询操作
+            const result = await new Promise((resolve, reject) => {
+                kdb.get(query, kid, (err, row) => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve(row);
+                    }
+                });
+            });
+
+            if (result) {
+                let  keyStore = result.keyStore;
+                if (typeof keyStore === 'string') {
+                    keyStore = JSON.parse(keyStore)
+                }
+                const keyDocumentInstance = await keystore.imported(keyStore, password);
+                if(!keyDocumentInstance) {
+                    return {
+                        errorCode: 200005,
+                        message: 'Password error'
+                    };
+                }
+                const parsedObject = JSON.parse(keyDocumentInstance);
+
+                return {
+                    errorCode: 0,
+                    message: 'SUCCESS',
+                    data: {
+                        keyDocument: parsedObject
+                    }
+                };
+            }else{
+                return {
+                    errorCode: 200003,
+                    message: 'Key ID for the document does not exist'
+                };
+            }
+
+        } catch (error) {
+            console.log('Error connecting to the database:', error);
+            return {
+                errorCode: 400000,
+                message: 'System error'
+            };
+
+        }
+    }
+
+
+    // 根据 Key 删除数据
+    static async deleteKey({kid} = {}) {
+
+        try {
+            // 构建 sql
+            const deleteQuery = 'DELETE FROM key_documents WHERE id = ?';
+
+            // 执行插入操作
+            const result = await this.runAsync(
+                deleteQuery,
+                kid
+            );
+            console.log("result:", result);
+            return {
+                errorCode: 0,
+                message: 'SUCCESS',
+            };
+        } catch (error) {
+            console.log('Error connecting to the database:', error);
+            return {
+                errorCode: 400000,
+                message: 'System error'
+            };
+        }
+    }
+
+
+    // 根据 Key 查询数据并返回
+    static async listKeys({pageStart, pageSize} = {}) {
+        try {
+            pageStart = pageStart?pageStart:1;
+            pageSize = pageSize?pageSize:1000;
+            // 构建 SELECT 查询
+            const selectQuery = 'SELECT id FROM key_documents LIMIT ? OFFSET ?';
+            // 构建 COUNT 查询
+            const countQuery = 'SELECT COUNT(*) AS totalCount FROM key_documents';
+
+
+            // 计算 OFFSET 值
+            const offset = (pageStart - 1) * pageSize;
+
+            // 执行 SELECT 操作
+            const rows = await new Promise((resolve, reject) => {
+                kdb.all(selectQuery, [pageSize, offset], (err, rows) => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve(rows);
+                    }
+                });
+            });
+            // 执行 COUNT 操作
+            const countResult = await new Promise((resolve, reject) => {
+                kdb.get(countQuery, [], (err, result) => {
+                    if (err) {
+                        reject(err);
+                    } else {
+                        resolve(result);
+                    }
+                });
+            });
+
+            const idList = rows.map(row => row.id);
+
+            return {
+                errorCode: 0,
+                message: 'SUCCESS',
+                page: {
+                    pageStart: pageStart,
+                    pageSize: pageSize,
+                    pageTotal: countResult.totalCount
+                },
+                dataList: idList
+            };
+        } catch (error) {
+            console.log('Error connecting to the database:', error);
+            return {
+                errorCode: 400000,
+                message: 'System error'
+            };
+        }
+    }
+
+}
