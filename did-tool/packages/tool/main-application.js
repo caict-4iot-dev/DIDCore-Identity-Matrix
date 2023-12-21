@@ -1,4 +1,4 @@
-import PluginInterface from './plugin-interface.mjs';
+import PluginInterface from './plugin-interface.js';
 
 class MainApplication {
   constructor() {
@@ -14,8 +14,9 @@ class MainApplication {
   }
 
   executeAllPluginsMethods(plugin, methodName, ...params) {
-    if (this.plugins.some(item => JSON.stringify(plugin) === JSON.stringify(item))) {
-      plugin.executeMethod(methodName, ...params);
+    if (this.plugins.includes(plugin)) {
+      const result =  plugin.executeMethod(methodName, ...params);
+      return result
     } else {
       console.error(`plugin not registerd`);
     }
