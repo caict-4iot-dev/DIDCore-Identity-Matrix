@@ -120,7 +120,7 @@ export class Ed25519VerificationKey2020 extends LDKeyPair {
    * @returns {object} A plain js object that's ready for serialization
    *   (to JSON, etc), for use in DIDs, Linked Data Proofs, etc.
    */
-   static export({publicKey = false, privateKey = false, includeContext = false} = {}) {
+  export({publicKey = false, privateKey = false, includeContext = false} = {}) {
     if(!(publicKey || privateKey)) {
       throw new TypeError(
         'Export requires specifying either "publicKey" or "privateKey".');
@@ -200,3 +200,4 @@ function _encodeMbKey(header, key) {
 
   return MULTIBASE_BASE58_HEADER + base58.encode(mbKey);
 }
+export default Ed25519VerificationKey2020;

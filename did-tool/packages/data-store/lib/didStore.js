@@ -1,4 +1,5 @@
-import db from './database.js';
+import db from './didDatabase.js';
+import DidDocument from './entities/DidDocument.js';
 
 export class didStore {
 
@@ -30,7 +31,7 @@ export class didStore {
 
   static async runAsync(query, ...params) {
     return new Promise((resolve, reject) => {
-      db.run(query, params, function (err) {
+      db.run(query, ...params, function (err) {
         if (err) {
           reject(err);
         } else {
@@ -43,40 +44,26 @@ export class didStore {
   static async importDID({jsonData} = {}) {
 
     try {
-
-      // const didDocumentInstance = new DidDocument(jsonData);
-      //
-      // // 格式校验
-      //
-      // if(!await this.validateAuthenticationContext(didDocumentInstance)){
-      //   return {
-      //     errorCode: 100002,
-      //     message: 'Document format error',
-      //   };
-      // }
-
-      // 校验did是否重复
-      // const did = didDocumentInstance.id;
-      // const queriedDocument = await didDocumentRepository.findOne({ where: { did } });
-      // if (queriedDocument) {
-      //   return {
-      //     errorCode: 100001,
-      //     message: 'Duplicate BID for the document',
-      //   };
-      // }
+      const didDocumentInstance = new DidDocument(jsonData);
+      // 格式校验
+      if(!await this.validateAuthenticationContext(didDocumentInstance)){
+        return {
+          errorCode: 100002,
+          message: 'Document format error',
+        };
+      }
+      const entityData = didDocumentInstance.toEntity();
       // 保存文档
+      const { id, context, verificationMethod, authentication, extension, service, created, updated, proof } = entityData;
 
-
-      const { id, "@context": context, verification, authentication, extension, service, created, updated, proof } = jsonData;
       // 将 JSON 数据插入数据库
       const insertQuery  = `INSERT INTO did_documents VALUES ( ?, ?, ?, ?, ?, ?, ?, ?, ? )`;
 
       // 执行插入操作
-      const result = await this.runAsync(
+      await this.runAsync(
           insertQuery,
-          id, context, verification, authentication, extension, service, created, updated, proof
+          id, context, verificationMethod, authentication, extension, service, created, updated, proof
       );
-      console.log("result:", result);
       return {
         errorCode: 0,
         message: 'SUCCESS',
@@ -177,69 +164,51 @@ export class didStore {
   //   }
   // }
   //
-  // // 根据 did 查询数据并返回
-  // static async getDID(did) {
-  //   let connection;
-  //
-  //   try {
-  //     // 创建数据库连接
-  //     connection = await createConnection({
-  //       type: 'sqlite',
-  //       database: 'did_document.sqlite',
-  //       synchronize: true,
-  //       logging: true,
-  //       entities: [
-  //         DidDocumentEntity
-  //       ],
-  //     });
-  //
-  //     // 加载实体的元数据
-  //     await connection.synchronize();
-  //
-  //     // 返回仓库
-  //     const didDocumentRepository = connection.getRepository(DidDocumentEntity);
-  //
-  //     // 根据 did 查询文档
-  //     const queriedDocument = await didDocumentRepository.findOne({ where: { did } });
-  //
-  //     if (queriedDocument) {
-  //       const didDocumentInstance = DidDocument.fromEntity(queriedDocument);
-  //       return {
-  //         errorCode: 0,
-  //         message: 'SUCCESS',
-  //         data: {
-  //           didDocument: didDocumentInstance
-  //         }
-  //       };
-  //     }else{
-  //       return {
-  //         errorCode: 100003,
-  //         message: 'BID for the document does not exist'
-  //       };
-  //     }
-  //
-  //   } catch (error) {
-  //     console.log('Error connecting to the database:', error);
-  //
-  //     // 根据错误类型设置不同的错误码和消息
-  //     let errorCode, errorMessage;
-  //     errorCode = 400000; // 系统错误
-  //     errorMessage = 'System error';
-  //
-  //     throw {
-  //       errorCode,
-  //       message: errorMessage,
-  //     };
-  //
-  //   } finally {
-  //     // 最后，确保关闭数据库连接
-  //     if (connection) {
-  //       await connection.close();
-  //     }
-  //   }
-  // }
-  //
-  //
+  // 根据 did 查询数据并返回
+  static async getDID({did} = {}) {
+
+    try {
+      // 根据 did 查询文档
+      const query  = `SELECT * FROM did_documents WHERE id = ?`;
+
+      // 执行查询操作
+      const result = await new Promise((resolve, reject) => {
+        db.get(query, did, (err, row) => {
+          if (err) {
+            reject(err);
+          } else {
+            resolve(row);
+          }
+        });
+      });
+
+      if (result) {
+        const didDocumentInstance = DidDocument.fromEntity(result);
+        return {
+          errorCode: 0,
+          message: 'SUCCESS',
+          data: {
+            didDocument: didDocumentInstance
+          }
+        };
+      }else{
+        return {
+          errorCode: 100003,
+          message: 'BID for the document does not exist'
+        };
+      }
+
+    } catch (error) {
+      console.log('Error connecting to the database:', error);
+      return {
+        errorCode: 100003,
+        message: 'System error'
+      };
+
+    }
+  }
+
+
   // // 根据 did 删除数据
   // static async deleteDID(did) {
   //   let connection;
