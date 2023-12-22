@@ -1,4 +1,4 @@
-import {DidManager} from '../index.js';
+import {DidManager} from '../../index.js';
 import chai from "chai";
 const should = chai.should();
 const {expect} = chai;

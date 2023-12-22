@@ -1,4 +1,4 @@
-import { didManager } from './didManager.js';
+import { didManager } from './lib/didManager.js';
 import PluginInterface from 'tool/plugin-interface.js';
 
 export class DidManager extends PluginInterface {

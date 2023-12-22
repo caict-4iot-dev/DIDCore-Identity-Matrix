@@ -1,8 +1,8 @@
 // index.js or any other entry point
 import MainApplication from '../main-application.js';
-import KeyManager from 'key-manager/lib/index.js';
-import {DidStore, KeyStoreManager} from 'data-store/lib/index.js';
-import {DidManager} from "did-manage/lib/index.js";
+import KeyManager from 'key-manager';
+import {DidStore, KeyStoreManager} from 'data-store/index.js';
+import {DidManager} from "did-manage/index.js";
 import chai from "chai";
 const should = chai.should();
 const {expect} = chai;

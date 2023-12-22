@@ -1,5 +1,5 @@
 import chai from 'chai';
-import KeyManager from '../index.js';
+import KeyManager from '../../index.js';
 import * as base58btc from 'base58-universal';
 const should = chai.should();
 const {expect} = chai;
