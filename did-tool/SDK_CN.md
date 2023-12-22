@@ -366,7 +366,7 @@ const result = await DidManager.DidManagerRemoveService(did,serviceId, storageTy
 const result = await DidManager.DidManagerDelete(did, storageType);
 ```
 
-### 5.9 验签
+### 5.10 验签
 
 ```javascript
 // 验签
