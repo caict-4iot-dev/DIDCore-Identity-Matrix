@@ -1,6 +1,5 @@
 import {DidManager} from '../../index.js';
 import chai from "chai";
-const should = chai.should();
 const {expect} = chai;
 
 describe('didStore Test', () => {
@@ -54,23 +53,23 @@ describe('didStore Test', () => {
     "provider": "did:fake"
   };
 
+  const storageType = "sqlite";
   
   it('didManagerCreate Test', async () => {
     // 调用保存函数
     const didDocumentCreate = await DidManager.DidManagerCreate();
-    console.log("didDocument:", didDocumentCreate);
     expect(didDocumentCreate.errorCode).to.equal(0);
   });
 
   it('didManagerImport Test', async () => {
       // 调用保存函数
-      const didDocumentImport = await DidManager.DidManagerImport(jsonData);
+      const didDocumentImport = await DidManager.DidManagerImport(jsonData, storageType);
       expect(didDocumentImport.errorCode).to.equal(0);
   });
 
   it('save a DidDocument for Duplicate BID for the document error', async () => {
     // 调用保存函数
-    const saveDidDocument = await DidManager.DidManagerImport(jsonData);
+    const saveDidDocument = await DidManager.DidManagerImport(jsonData, storageType);
     expect(saveDidDocument.errorCode).to.equal(100001);
 
   });
@@ -79,14 +78,16 @@ describe('didStore Test', () => {
 
     jsonData.services.id = "did:fake:receiverWithMediation2";
     // 调用修改函数
-    const saveDidDocument = await DidManager.DidManagerUpdate(jsonData);
+    const saveDidDocument = await DidManager.DidManagerUpdate(jsonData, storageType);
     expect(saveDidDocument.errorCode).to.equal(0);
 
   });
 
   it('didManageraddKey test', async () => {
 
-    const result = await DidManager.DidManageraddKey(jsonData.did,"did:bid:efYGggWARD5GN5TMmMcxm7XRa9DJXRPP#z6Mkpw72M9suPCBv48X2Xj4YKZJH9W7wzEK1aS6JioKSo89C")
+    const id = "did:bid:efYGggWARD5GN5TMmMcxm7XRa9DJXRPP#z6Mkpw72M9suPCBv48X2Xj4YKZJH9W7wzEK1aS6JioKSo89C";
+
+    const result = await DidManager.DidManageraddKey(jsonData.did,id, storageType)
     // 断言
     expect(result.errorCode).to.equal(0);
 
@@ -95,7 +96,7 @@ describe('didStore Test', () => {
   it('didManagerRemoveKey test', async () => {
 
 
-    const result = await DidManager.DidManagerRemoveKey(jsonData.did,jsonData.extension[0])
+    const result = await DidManager.DidManagerRemoveKey(jsonData.did,jsonData.extension[0], storageType)
     // 断言
     expect(result.errorCode).to.equal(0);
 
@@ -117,7 +118,7 @@ describe('didStore Test', () => {
       ]
     }
 
-    const result = await DidManager.DidManagerAddService(jsonData.did,serviceData);
+    const result = await DidManager.DidManagerAddService(jsonData.did,serviceData, storageType);
     // 断言
     expect(result.errorCode).to.equal(0);
 
@@ -126,7 +127,8 @@ describe('didStore Test', () => {
 
   it('didManagerRemoveService test', async () => {
 
-    const result = await DidManager.DidManagerRemoveService(jsonData.did,"did:fake:receiverWithMediation2")
+    const id = "did:fake:receiverWithMediation2";
+    const result = await DidManager.DidManagerRemoveService(jsonData.did,id, storageType)
     // 断言
     expect(result.errorCode).to.equal(0);
 
@@ -134,7 +136,7 @@ describe('didStore Test', () => {
 
   it('didManagerFind test', async () => {
 
-    const result = await DidManager.DidManagerFind(jsonData.did);
+    const result = await DidManager.DidManagerFind(jsonData.did, storageType);
     // 断言
     expect(result.errorCode).to.equal(0);
 
@@ -143,10 +145,21 @@ describe('didStore Test', () => {
   it('delete didManagerDelete test', async () => {
 
     // 从数据库中检索保存的 DidDocument
-    const result = await DidManager.DidManagerDelete(jsonData.did);
+    const result = await DidManager.DidManagerDelete(jsonData.did, storageType);
     // 断言
     expect(result.errorCode).to.equal(0);
 
+  });
+
+  it('didManagerCreate Test', async () => {
+    // 调用保存函数
+    const didDocumentCreate = await DidManager.DidManagerCreate();
+    const didDocument = didDocumentCreate.data.didDocument;
+    let publicKeyMultibase = didDocument.verificationMethod[0].publicKeyMultibase;
+    const verify = await DidManager.Verify(didDocument, publicKeyMultibase);
+    expect(verify.errorCode).to.equal(0);
+    expect(verify.data.verify).to.equal(true);
+    console.log("verify:", verify);
   });
 
 });

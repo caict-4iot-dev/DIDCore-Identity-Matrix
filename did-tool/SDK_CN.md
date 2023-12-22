@@ -109,21 +109,21 @@ const result = await verifier.verify({data, signature});
 
 ```javascript
 // 导入did
-const saveDidDocument = await DidStore.ImportDID(jsonData);
+const saveDidDocument = await DidStore.ImportDID(jsonData, storageType);
 ```
 
 ### 4.2 编辑did
 
 ```javascript
 // 编辑did
-const updatDidDocument = await DidStore.UpdateDID(jsonData);
+const updatDidDocument = await DidStore.UpdateDID(jsonData, storageType);
 ```
 
 ### 4.3 查询did文档
 
 ```javascript
 // 查询did
-const didDocument = await DidStore.GetDID(did);
+const didDocument = await DidStore.GetDID(did, storageType);
 console.log("didDocument:", didDocument);
 ```
 
@@ -153,14 +153,14 @@ didDocument: {
 
 ```javascript
 // 删除did
-const result = await DidStore.DeleteDID(did);
+const result = await DidStore.DeleteDID(did, storageType);
 ```
 
 ### 4.5 did列表
 
 ```javascript
 // 导入did
-const didList = await DidStore.ListDIDs(pageStart, pageSize);
+const didList = await DidStore.ListDIDs(pageStart, pageSize, storageType);
 console.log("didList:", didList);
 ```
 
@@ -185,21 +185,21 @@ didList: {
 
 ```javascript
 // 导入key
-const saveKey = await KeyStoreManager.ImportKey(jsonData, password);
+const saveKey = await KeyStoreManager.ImportKey(jsonData, password, storageType);
 ```
 
 ### 4.7 编辑key
 
 ```javascript
 // 编辑key
-const updateKey = await KeyStoreManager.UpdateKey(jsonData, password);
+const updateKey = await KeyStoreManager.UpdateKey(jsonData, password, storageType);
 ```
 
 ### 4.8 查询key
 
 ```javascript
 // 导入did
-const key = await DidStore.GetKey(kid, password);
+const key = await DidStore.GetKey(kid, password, storageType);
 console.log("key:", key);
 ```
 
@@ -226,14 +226,14 @@ key: {
 
 ```javascript
 // 删除key
-const result = await KeyStoreManager.DeleteKey(kid);
+const result = await KeyStoreManager.DeleteKey(kid, storageType);
 ```
 
 ### 4.10 key列表
 
 ```javascript
 // key列表
-const keyList = await KeyStoreManager.ListKeys(pageStart, pageSize)
+const keyList = await KeyStoreManager.ListKeys(pageStart, pageSize, storageType)
 console.log("keyList:", keyList);
 ```
 
@@ -291,14 +291,14 @@ didDocument: {
 
 ```javascript
 // 编辑did
-const didDocumentImport = await DidManager.DidManagerImport(jsonData);
+const didDocumentImport = await DidManager.DidManagerImport(jsonData, storageType);
 ```
 
 ### 5.3 查询did文档
 
 ```javascript
 // 查询did
-const didDocument = await DidManager.DidManagerFind(did);
+const didDocument = await DidManager.DidManagerFind(did, storageType);
 ```
 
 返回：
@@ -327,14 +327,14 @@ didDocument: {
 
 ```javascript
 // 编辑did
-const result = await DidManager.DidManagerUpdate(jsonData);
+const result = await DidManager.DidManagerUpdate(jsonData, storageType);
 ```
 
 ### 5.5 did文档增加管理密钥
 
 ```javascript
 // did文档增加管理密钥
-const result = await DidManager.DidManageraddKey(did,kid);
+const result = await DidManager.DidManageraddKey(did,kid, storageType);
     
 ```
 
@@ -342,28 +342,47 @@ const result = await DidManager.DidManageraddKey(did,kid);
 
 ```javascript
 // did文档移除管理密钥
-const result = await DidManager.DidManagerRemoveKey(did,kid)
+const result = await DidManager.DidManagerRemoveKey(did,kid, storageType)
 ```
 
 ### 5.7 did文档增加service
 
 ```javascript
 // did文档增加service
-const result = await DidManager.DidManagerAddService(did,serviceData)
+const result = await DidManager.DidManagerAddService(did,serviceData, storageType)
 ```
 
 ### 4.8 did文档移除service
 
 ```javascript
 // did文档移除service
-const result = await DidManager.DidManagerRemoveService(did,serviceId);
+const result = await DidManager.DidManagerRemoveService(did,serviceId, storageType);
 ```
 
 ### 5.9 删除did
 
 ```javascript
 // 删除did
-const result = await DidManager.DidManagerDelete(did);
+const result = await DidManager.DidManagerDelete(did, storageType);
+```
+
+### 5.10 验签
+
+```javascript
+// 验签
+const verify = await DidManager.Verify(didDocument, publicKeyMultibase);
+```
+
+返回：
+
+```javascript
+verify: { 
+    errorCode: 0, 
+    message: 'SUCCESS', 
+    data: { 
+        verify: true 
+    } 
+}
 ```
 
 

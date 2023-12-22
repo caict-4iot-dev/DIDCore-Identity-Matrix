@@ -4,6 +4,7 @@
   "dependencies": {
     "sqlite3": "^5.0.2",
     "typescript": "^4.5.5",
+    "bifcore-sdk-nodejs": "^1.0.7",
     "data-store": "workspace:^",
     "tool": "workspace:^"
   },

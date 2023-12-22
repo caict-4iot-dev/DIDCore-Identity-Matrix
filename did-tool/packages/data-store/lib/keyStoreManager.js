@@ -34,9 +34,19 @@ export class keyStoreManager {
             });
         });
     }
-    //保存
-    static async importKey({jsonData, password} = {}) {
 
+    static async validateStorageType(storageType) {
+        if(!storageType || storageType !== "sqlite"){
+            throw {
+                errorCode: 300001,
+                message: 'Unsupported storage type error',
+            };
+        }
+    }
+    //保存
+    static async importKey({jsonData, password, storageType} = {}) {
+
+        await this.validateStorageType(storageType);
         try {
             if (!password || password.length === 0) {
                 return {
@@ -86,7 +96,8 @@ export class keyStoreManager {
         }
     }
     //修改
-    static async updateKey({jsonData, password} = {}) {
+    static async updateKey({jsonData, password, storageType} = {}) {
+        await this.validateStorageType(storageType);
         try {
             if (!password || password.length === 0) {
                 return {
@@ -138,8 +149,8 @@ export class keyStoreManager {
     }
 
     // 根据 Key 查询数据并返回
-    static async getKey({kid, password} = {}) {
-
+    static async getKey({kid, password, storageType} = {}) {
+        await this.validateStorageType(storageType);
         try {
             if (!password || password.length === 0) {
                 return {
@@ -201,8 +212,8 @@ export class keyStoreManager {
 
 
     // 根据 Key 删除数据
-    static async deleteKey({kid} = {}) {
-
+    static async deleteKey({kid, storageType} = {}) {
+        await this.validateStorageType(storageType);
         try {
             // 构建 sql
             const deleteQuery = 'DELETE FROM key_documents WHERE id = ?';
@@ -228,7 +239,8 @@ export class keyStoreManager {
 
 
     // 根据 Key 查询数据并返回
-    static async listKeys({pageStart, pageSize} = {}) {
+    static async listKeys({pageStart, pageSize, storageType} = {}) {
+        await this.validateStorageType(storageType);
         try {
             pageStart = pageStart?pageStart:1;
             pageSize = pageSize?pageSize:1000;
