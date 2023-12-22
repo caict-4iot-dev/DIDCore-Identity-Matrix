@@ -31,4 +31,4 @@ export class DidManager extends PluginInterface {
     }
 }
 
-export default {DidManager}
+export default DidManager
