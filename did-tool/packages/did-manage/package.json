@@ -15,7 +15,6 @@
     "url": "https://github.com/decentralized-identity/veramo.git",
     "directory": "packages/data-store"
   },
-  "author": "fanzhimeng@bubi.cn",
   "keywords": [
     "bitfactory",
     "DID",
