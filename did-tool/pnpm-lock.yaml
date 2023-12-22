@@ -72,6 +72,9 @@ importers:
       sqlite3:
         specifier: ^5.0.2
         version: 5.1.6
+      tool:
+        specifier: workspace:^
+        version: link:../tool
       typescript:
         specifier: ^4.5.5
         version: 4.9.5
@@ -88,7 +91,14 @@ importers:
         specifier: ^7.0.0
         version: 7.0.0
 
-  packages/tool: {}
+  packages/tool:
+    dependencies:
+      data-store:
+        specifier: workspace:^
+        version: link:../data-store
+      key-manager:
+        specifier: workspace:^
+        version: link:../key-manager
 
 packages:
 

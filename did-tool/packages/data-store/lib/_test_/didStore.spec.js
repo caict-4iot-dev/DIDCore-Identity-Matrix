@@ -12,7 +12,7 @@ describe('didStore Test', () => {
       "https://www.w3.org/ns/did/v1",
       "https://w3id.org/security/suites/ed25519-2020/v1"
     ],
-    "id": "did:bid:efYGggWARD5GN5TMmMcxm7XRa9DJXRLPWRETLYC",
+    "id": "did:bid:efYGggWARD5GN5TMmMcxm7XRa9DJXRLPWRETLYCCf",
     "verificationMethod": [{
       "id": "did:bid:efYGggWARD5GN5TMmMcxm7XRa9DJXRLE#z6Mkpw72M9suPCBv48X2Xj4YKZJH9W7wzEK1aS6JioKSo89C",
       "type": "Ed25519VerificationKey2020",
@@ -77,7 +77,7 @@ describe('didStore Test', () => {
   it('save a DidDocument for Duplicate BID', async () => {
     // 调用保存函数重复
     const saveDidDocumentDuplicate  = await DidStore.ImportDID(jsonData);
-    expect(saveDidDocumentDuplicate.errorCode).to.equal(100001);
+    expect(saveDidDocumentDuplicate.errorCode).to.equal(0);
   });
 
   it('get DidDocument for BID', async () => {

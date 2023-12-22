@@ -2,6 +2,8 @@
   "name": "tool",
   "version": "1.0.0",
   "dependencies": {
+    "data-store": "workspace:^",
+    "key-manager": "workspace:^"
   },
   "type": "module"
 }
