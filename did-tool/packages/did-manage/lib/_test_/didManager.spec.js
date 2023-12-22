@@ -58,6 +58,7 @@ describe('didStore Test', () => {
   it('didManagerCreate Test', async () => {
     // 调用保存函数
     const didDocumentCreate = await DidManager.DidManagerCreate();
+    console.log("didDocument:", didDocumentCreate);
     expect(didDocumentCreate.errorCode).to.equal(0);
   });
 
@@ -83,7 +84,7 @@ describe('didStore Test', () => {
 
   });
 
-  it('didManageraddKey it', async () => {
+  it('didManageraddKey test', async () => {
 
     const result = await DidManager.DidManageraddKey(jsonData.did,"did:bid:efYGggWARD5GN5TMmMcxm7XRa9DJXRPP#z6Mkpw72M9suPCBv48X2Xj4YKZJH9W7wzEK1aS6JioKSo89C")
     // 断言
@@ -91,7 +92,7 @@ describe('didStore Test', () => {
 
   });
 
-  it('didManagerRemoveKey it', async () => {
+  it('didManagerRemoveKey test', async () => {
 
 
     const result = await DidManager.DidManagerRemoveKey(jsonData.did,jsonData.extension[0])
@@ -100,7 +101,7 @@ describe('didStore Test', () => {
 
   });
 
-  it('didManagerAddService it', async () => {
+  it('didManagerAddService test', async () => {
 
     const serviceData = {
       "id": "msg4asdsadsdsa",
@@ -116,14 +117,14 @@ describe('didStore Test', () => {
       ]
     }
 
-    const result = await DidManager.DidManagerAddService(jsonData.did,serviceData)
+    const result = await DidManager.DidManagerAddService(jsonData.did,serviceData);
     // 断言
     expect(result.errorCode).to.equal(0);
 
   });
 
 
-  it('didManagerRemoveService it', async () => {
+  it('didManagerRemoveService test', async () => {
 
     const result = await DidManager.DidManagerRemoveService(jsonData.did,"did:fake:receiverWithMediation2")
     // 断言
@@ -131,7 +132,7 @@ describe('didStore Test', () => {
 
   });
 
-  it('didManagerFind it', async () => {
+  it('didManagerFind test', async () => {
 
     const result = await DidManager.DidManagerFind(jsonData.did);
     // 断言
@@ -139,10 +140,10 @@ describe('didStore Test', () => {
 
   });
 
-  it('delete didManagerDelete', async () => {
+  it('delete didManagerDelete test', async () => {
 
     // 从数据库中检索保存的 DidDocument
-    const result = await DidManager.DidManagerDelete(jsonData.did)
+    const result = await DidManager.DidManagerDelete(jsonData.did);
     // 断言
     expect(result.errorCode).to.equal(0);
 

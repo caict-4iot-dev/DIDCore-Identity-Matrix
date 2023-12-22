@@ -96,7 +96,7 @@ describe('keyStore Test', () => {
 
     // 从数据库中检索保存的 Key
     const retrievedKey = await KeyStoreManager.ListKeys()
-    console.log('DidList:', retrievedKey);
+    console.log('keyList:', retrievedKey);
     // 断言
     expect(retrievedKey.errorCode).to.equal(0);
 

@@ -10,9 +10,9 @@
 
 + key-manager： 密钥管理组件，提供密钥的生成、导出、签名和验签功能。
 
-+ data-store： 
++ data-store： did和key存储组件，提供 did和可以的存储，修改，查询、删除等功能。
 
-+ did-manager： 
++ did-manager： did管理组件，提供did生成，存储，修改，删除，查询等功能。
 
 
 ## 2 tool
@@ -27,7 +27,7 @@ mainApp.registerPlugin(km); // 使用容器注册插件
 
 const generateResult1 = await mainApp.executeAllPluginsMethods(km, 'Generate'); // 执行KeyManager中的Generate方法
 console.log('generateResult1:', generateResult1)
-  ```
+```
 ## 3 key-manager
 ### 3.1 generate
 生成Ed25519VerificationKey2020
@@ -102,3 +102,289 @@ const signature = await signer.sign({data});
 //验签
 const result = await verifier.verify({data, signature});
 ```
+
+## 4 data-store
+
+### 4.1 导入did
+
+```javascript
+// 导入did
+const saveDidDocument = await DidStore.ImportDID(jsonData);
+```
+
+### 4.2 编辑did
+
+```javascript
+// 编辑did
+const updatDidDocument = await DidStore.UpdateDID(jsonData);
+```
+
+### 4.3 查询did文档
+
+```javascript
+// 查询did
+const didDocument = await DidStore.GetDID(did);
+console.log("didDocument:", didDocument);
+```
+
+返回：
+
+```javascript
+didDocument: {
+  errorCode: 0,
+  message: 'SUCCESS',
+  data: {
+    didDocument: DidDocument {
+      '@context': [Array],
+      id: 'did:bid:efYGggWARD5GN5TMmMcxm7XRa9DJXRLPWRETLYA',
+      verificationMethod: [Array],
+      authentication: [Array],
+      extension: [Object],
+      service: [Array],
+      created: '2021-05-10T06:23:38Z',
+      updated: '2021-05-10T06:23:38Z',
+      proof: [Object]
+    }
+  }
+}
+```
+
+### 4.4 删除did
+
+```javascript
+// 删除did
+const result = await DidStore.DeleteDID(did);
+```
+
+### 4.5 did列表
+
+```javascript
+// 导入did
+const didList = await DidStore.ListDIDs(pageStart, pageSize);
+console.log("didList:", didList);
+```
+
+返回
+
+```javascript
+didList: {
+  errorCode: 0,
+  message: 'SUCCESS',
+  page: { pageStart: 1, pageSize: 1000, pageTotal: 5 },
+  dataList: [
+    'did:bid:efYGggWARD5GN5TMmMcxm7XRa9DJXRLPWRETLYA',
+    'did:bid:efYGggWARD5GN5TMmMcxm7XRa9DJXRLPWRETLYB',
+    'did:bid:efYGggWARD5GN5TMmMcxm7XRa9DJXRLPWRETLYC',
+    'did:bid:efYGggWARD5GN5TMmMcxm7XRa9DJXRLPWRETLYD',
+    'did:bid:efYGggWARD5GN5TMmMcxm7XRa9DJXRLPWRETLYE'
+  ]
+}
+```
+
+### 4.6 导入key
+
+```javascript
+// 导入key
+const saveKey = await KeyStoreManager.ImportKey(jsonData, password);
+```
+
+### 4.7 编辑key
+
+```javascript
+// 编辑key
+const updateKey = await KeyStoreManager.UpdateKey(jsonData, password);
+```
+
+### 4.8 查询key
+
+```javascript
+// 导入did
+const key = await DidStore.GetKey(kid, password);
+console.log("key:", key);
+```
+
+返回：
+
+```javascript
+key: {
+  errorCode: 0,
+  message: 'SUCCESS',
+  data: {
+    keyDocument: {
+      id: 'did:example:1234#z6Mkpw72M9suPCBv48X2Xj4YKZJH9W7wzEK1aS6JioKSo89f',
+      type: 'Ed25519VerificationKey2020',
+      controller: 'did:example:1234',
+      publicKeyMultibase: 'z6Mkpw72M9suPCBv48X2Xj4YKZJH9W7wzEK1aS6JioKSo89C',
+      privateKeyMultibase: 'zrv1mHUXWkWUpThaapTt8tkxSotE1iSRRuPNarhs3vTn2z61hQESuKXG7zGQsePB7JHdjaCzPZmBkkqULLvoLHoD82a',
+      revoked: '2020-12-16T16:00:00Z'
+    }
+  }
+}
+```
+
+### 4.9 删除key
+
+```javascript
+// 删除key
+const result = await KeyStoreManager.DeleteKey(kid);
+```
+
+### 4.10 key列表
+
+```javascript
+// key列表
+const keyList = await KeyStoreManager.ListKeys(pageStart, pageSize)
+console.log("keyList:", keyList);
+```
+
+返回：
+
+```javascript
+keyList: {
+  errorCode: 0,
+  message: 'SUCCESS',
+  page: { pageStart: 1, pageSize: 1000, pageTotal: 6 },
+  dataList: [
+    'did:example:1234#z6Mkpw72M9suPCBv48X2Xj4YKZJH9W7wzEK1aS6JioKSo89M',
+    'did:example:1234#z6Mkpw72M9suPCBv48X2Xj4YKZJH9W7wzEK1aS6JioKSo89N',
+    'did:example:1234#z6Mkpw72M9suPCBv48X2Xj4YKZJH9W7wzEK1aS6JioKSo89O',
+    'did:example:1234#z6Mkpw72M9suPCBv48X2Xj4YKZJH9W7wzEK1aS6JioKSo89a',
+    'did:example:1234#z6Mkpw72M9suPCBv48X2Xj4YKZJH9W7wzEK1aS6JioKSo89aa',
+    'did:example:1234#z6Mkpw72M9suPCBv48X2Xj4YKZJH9W7wzEK1aS6JioKSo89q'
+  ]
+}
+```
+
+## 5 did-manager
+
+### 5.1 创建did
+
+```javascript
+// 创建did
+const didDocument = await DidManager.DidManagerCreate();
+console.log("didDocument:", didDocument);
+```
+
+返回：
+
+```javascript
+didDocument: {
+  errorCode: 0,
+  message: 'SUCCESS',
+  data: {
+    didDocument: {
+      '@context': [Array],
+      id: 'did:example:efYGggWARD5GN5TMmMcxm7XRa9DJXRLPWRETLYNOP',
+      verificationMethod: [Array],
+      authentication: [Array],
+      extension: [Object],
+      service: [Array],
+      created: '2021-05-10T06:23:38Z',
+      updated: '2021-05-10T06:23:38Z',
+      proof: [Object]
+    }
+  }
+}
+```
+
+### 5.2 导入did
+
+```javascript
+// 编辑did
+const didDocumentImport = await DidManager.DidManagerImport(jsonData);
+```
+
+### 5.3 查询did文档
+
+```javascript
+// 查询did
+const didDocument = await DidManager.DidManagerFind(did);
+```
+
+返回：
+
+```javascript
+didDocument: {
+  errorCode: 0,
+  message: 'SUCCESS',
+  data: {
+    didDocument: DidDocument {
+      '@context': [Array],
+      id: 'did:bid:efYGggWARD5GN5TMmMcxm7XRa9DJXRLPWRETLYA',
+      verificationMethod: [Array],
+      authentication: [Array],
+      extension: [Object],
+      service: [Array],
+      created: '2021-05-10T06:23:38Z',
+      updated: '2021-05-10T06:23:38Z',
+      proof: [Object]
+    }
+  }
+}
+```
+
+### 5.4 编辑did
+
+```javascript
+// 编辑did
+const result = await DidManager.DidManagerUpdate(jsonData);
+```
+
+### 5.5 did文档增加管理密钥
+
+```javascript
+// did文档增加管理密钥
+const result = await DidManager.DidManageraddKey(did,kid);
+    
+```
+
+### 5.6 did文档移除管理密钥
+
+```javascript
+// did文档移除管理密钥
+const result = await DidManager.DidManagerRemoveKey(did,kid)
+```
+
+### 5.7 did文档增加service
+
+```javascript
+// did文档增加service
+const result = await DidManager.DidManagerAddService(did,serviceData)
+```
+
+### 4.8 did文档移除service
+
+```javascript
+// did文档移除service
+const result = await DidManager.DidManagerRemoveService(did,serviceId);
+```
+
+### 5.9 删除did
+
+```javascript
+// 删除did
+const result = await DidManager.DidManagerDelete(did);
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
