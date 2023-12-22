@@ -18,10 +18,10 @@
 ## 2 tool
 使用方式（以集成key-manager为例），具体执行详见tool/test/tooltest.spec.js
 ```javascript
-import MainApplication from '../main-application.js';
+import Tool from '../tool.js';
 import KeyManager from 'key-manager/lib/index.js';
 
-const mainApp = new MainApplication(); // 生成插件容器
+const mainApp = new Tool(); // 生成插件容器
 const km = new KeyManager() // 实体化插件
 mainApp.registerPlugin(km); // 使用容器注册插件
 
