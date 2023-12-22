@@ -96,6 +96,9 @@ importers:
       data-store:
         specifier: workspace:^
         version: link:../data-store
+      did-manage:
+        specifier: workspace:^
+        version: link:../did-manage
       key-manager:
         specifier: workspace:^
         version: link:../key-manager

@@ -77,7 +77,7 @@ describe('didStore Test', () => {
   it('save a DidDocument for Duplicate BID', async () => {
     // 调用保存函数重复
     const saveDidDocumentDuplicate  = await DidStore.ImportDID(jsonData);
-    expect(saveDidDocumentDuplicate.errorCode).to.equal(0);
+    expect(saveDidDocumentDuplicate.errorCode).to.equal(100001);
   });
 
   it('get DidDocument for BID', async () => {

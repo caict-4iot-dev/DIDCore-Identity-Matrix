@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "dependencies": {
     "data-store": "workspace:^",
-    "key-manager": "workspace:^"
+    "key-manager": "workspace:^",
+    "did-manage": "workspace:^"
   },
   "type": "module"
 }
