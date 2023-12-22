@@ -1,4 +1,5 @@
 import {DidStore} from 'data-store/lib/index.js';
+import BIFCoreSDK from "bifcore-sdk-nodejs";
 
 export class didManager {
 
@@ -25,26 +26,32 @@ export class didManager {
   static async didManagerCreate() {
 
     try {
+      let bifCoreSDK = new BIFCoreSDK({
+        host: 'http://test.bifcore.bitfactory.cn'
+      });
+      let keyPair = bifCoreSDK.keypair.getBidAndKeyPair();
+      const address = keyPair.encAddress + "#key-1";
+      const dateTimeString = new Date().toISOString().slice(0, -1) + 'Z';
       const jsonData = {
         "@context": [
           "https://www.w3.org/ns/did/v1",
           "https://w3id.org/security/suites/ed25519-2020/v1"
         ],
-        "id": "did:example:efYGggWARD5GN5TMmMcxm7XRa9DJXRLPWRETLYNOP",
+        "id": keyPair.encAddress,
         "verificationMethod": [{
-          "id": "did:example:efYGggWARD5GN5TMmMcxm7XRa9DJXRLE#z6Mkpw72M9suPCBv48X2Xj4YKZJH9W7wzEK1aS6JioKSo89C",
+          "id": address,
           "type": "Ed25519VerificationKey2020",
-          "controller": "did:example:efYGggWARD5GN5TMmMcxm7XRa9DJXRLE",
-          "publicKeyMultibase": "z6Mkpw72M9suPCBv48X2Xj4YKZJH9W7wzEK1aS6JioKSo89C"
+          "controller": keyPair.encAddress,
+          "publicKeyMultibase": keyPair.encPublicKey
         }],
         "authentication": [
-          "did:example:efYGggWARD5GN5TMmMcxm7XRa9DJXRLE#z6Mkpw72M9suPCBv48X2Xj4YKZJH9W7wzEK1aS6JioKSo89C"
+          address
         ],
         "extension": {
-          "recovery": ["did:example:efnVUgqQFfYeu97ABf6sGm3WFtVXHZB2#key-2"],
+          "recovery": [keyPair.encAddress+"#key-2"],
           "ttl": 86400,
           "delegateSign": {
-            "signer": "did:example:efJgt44mNDewKK1VEN454R17cjso3mSG#key-1",
+            "signer": address,
             "signatureValue": "eyJhbGciOiJSUzI1NiIsImI2NCI6ZmFsc2UsImNyaXQiOlsiYjY0Il19"
           },
           "type": 206,
@@ -61,13 +68,17 @@ export class didManager {
           "type": "DIDResolver",
           "serviceEndpoint": "www.caict.cn"
         }],
-        "created": "2021-05-10T06:23:38Z",
-        "updated": "2021-05-10T06:23:38Z",
-        "proof": {
-          "creator": "did:example:efYGggWARD5GN5TMmMcxm7XRa9DJXRLE#z6Mkpw72M9suPCBv48X2Xj4YKZJH9W7wzEK1aS6JioKSo89C",
-          "signatureValue": "9E07CD62FE6CE0A843497EBD045C0AE9FD6E1845414D0ED251622C66D9CC927CC21DB9C09DFF628DC042FCBB7D8B2B4901E7DA9774C20065202B76D4B1C15900"
-        }
+        "created": dateTimeString,
+        "updated": dateTimeString
       };
+
+      let didDocStr = JSON.stringify(jsonData);
+      let sign = bifCoreSDK.keypair.sign(didDocStr, keyPair.encPrivateKey);
+      const proof = {
+        "creator": address,
+        "signatureValue": sign
+      }
+      jsonData.proof = proof;
       return {
         errorCode: 0,
         message: 'SUCCESS',
@@ -88,12 +99,12 @@ export class didManager {
   }
 
 //保存
-  static async didManagerImport({jsonData} = {}) {
+  static async didManagerImport({jsonData, storageType} = {}) {
 
     try {
 
       const didDocument = await this.formatJson(jsonData);
-      const saveDidDocument = DidStore.ImportDID(didDocument);
+      const saveDidDocument = DidStore.ImportDID(didDocument, storageType);
       return saveDidDocument;
 
     } catch (error) {
@@ -108,11 +119,11 @@ export class didManager {
   }
 
 //修改
-  static async didManagerUpdate({jsonData} = {}) {
+  static async didManagerUpdate({jsonData, storageType} = {}) {
 
     try {
       const didDocument = await this.formatJson(jsonData);
-      const updateDidDocument = DidStore.UpdateDID(didDocument)
+      const updateDidDocument = DidStore.UpdateDID(didDocument, storageType)
       return updateDidDocument;
 
     } catch (error) {
@@ -128,10 +139,10 @@ export class didManager {
 
 
 //删除
-  static async didManagerDelete({did} = {}) {
+  static async didManagerDelete({did, storageType} = {}) {
 
     try {
-      const deleteDidDocument = DidStore.DeleteDID(did)
+      const deleteDidDocument = DidStore.DeleteDID(did, storageType)
       return deleteDidDocument;
 
     } catch (error) {
@@ -146,13 +157,13 @@ export class didManager {
   }
 
 //指定 DID 添加一个新的密钥
-  static async didManageraddKey({did, id} = {}) {
+  static async didManageraddKey({did, id, storageType} = {}) {
 
     try {
-      const didDocumentResult = await DidStore.GetDID(did)
+      const didDocumentResult = await DidStore.GetDID(did, storageType)
       let didDocument = didDocumentResult.data.didDocument;
       didDocument.authentication.push(id)
-      const updateDidDocument = await DidStore.UpdateDID(didDocument)
+      const updateDidDocument = await DidStore.UpdateDID(didDocument, storageType)
       return updateDidDocument;
 
     } catch (error) {
@@ -167,15 +178,15 @@ export class didManager {
   }
 
 //指定 DID 移除一个新的密钥
-  static async didManagerRemoveKey({did, id} = {}) {
+  static async didManagerRemoveKey({did, id, storageType} = {}) {
 
     try {
-      const didDocumentResult = DidStore.GetDID(did)
+      const didDocumentResult = DidStore.GetDID(did, storageType)
       let didDocument = (await didDocumentResult).data.didDocument;
       let authentication = didDocument.authentication
       const authenticationRemove = authentication.filter(item => item !== id);
       didDocument.authentication = authenticationRemove;
-      const updateDidDocument = DidStore.UpdateDID(didDocument)
+      const updateDidDocument = DidStore.UpdateDID(didDocument, storageType)
       return updateDidDocument;
 
     } catch (error) {
@@ -190,11 +201,11 @@ export class didManager {
   }
 
 //查询指定 DID 的 DID 文档
-  static async didManagerFind({did} = {}) {
+  static async didManagerFind({did, storageType} = {}) {
 
     try {
 
-      const didDocumentResult = DidStore.GetDID(did)
+      const didDocumentResult = DidStore.GetDID(did, storageType)
 
       return didDocumentResult;
 
@@ -210,13 +221,13 @@ export class didManager {
   }
 
 //指定 DID 添加一个service
-  static async didManagerAddService({did, jsonData} = {}) {
+  static async didManagerAddService({did, jsonData, storageType} = {}) {
 
     try {
-      const didDocumentResult = DidStore.GetDID(did)
+      const didDocumentResult = DidStore.GetDID(did, storageType)
       let didDocument = (await didDocumentResult).data.didDocument;
       didDocument.service.push(jsonData)
-      const updateDidDocument = DidStore.UpdateDID(didDocument)
+      const updateDidDocument = DidStore.UpdateDID(didDocument, storageType)
       return updateDidDocument;
 
     } catch (error) {
@@ -231,18 +242,54 @@ export class didManager {
   }
 
 //指定 DID 添加一个service
-  static async didManagerRemoveService({did, id} = {}) {
+  static async didManagerRemoveService({did, id, storageType} = {}) {
 
     try {
 
-      const didDocumentResult = DidStore.GetDID(did)
+      const didDocumentResult = DidStore.GetDID(did, storageType)
       let didDocument = (await didDocumentResult).data.didDocument;
       let service = didDocument.service
       const serviceRemove = service.filter(item => item.id !== id);
       didDocument.service = serviceRemove;
-      const updateDidDocument = DidStore.UpdateDID(didDocument)
+      const updateDidDocument = DidStore.UpdateDID(didDocument, storageType)
       return updateDidDocument;
 
+    } catch (error) {
+      console.log('Error connecting to the database:', error);
+
+      throw {
+        errorCode: 400000,
+        message: 'System error',
+      };
+
+    }
+  }
+
+  //验签
+  static async verify({jsonData, publicKey } = {}) {
+
+    try {
+      if(jsonData.proof){
+        const proof = jsonData.proof;
+        delete jsonData.proof;
+        let didDocStr = JSON.stringify(jsonData);
+        let bifCoreSDK = new BIFCoreSDK({
+          host: 'http://test.bifcore.bitfactory.cn'
+        });
+        const verify = bifCoreSDK.keypair.verify(didDocStr, proof.signatureValue, publicKey);
+        return {
+          errorCode: 0,
+          message: 'SUCCESS',
+          data: {
+            verify: verify
+          }
+        };
+      }else{
+        return {
+          errorCode: 100001,
+          message: 'Document format error',
+        };
+      }
     } catch (error) {
       console.log('Error connecting to the database:', error);
 

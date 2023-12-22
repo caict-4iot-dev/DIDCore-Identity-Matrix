@@ -1,5 +1,3 @@
-import DidStore from "../index.js";
-
 class DidDocument {
     constructor(data) {
         this['@context'] = data['@context'] || [];

@@ -29,6 +29,15 @@ export class didStore {
     return true;
   }
 
+  static async validateStorageType(storageType) {
+    if(!storageType || storageType !== "sqlite"){
+      throw {
+        errorCode: 300001,
+        message: 'Unsupported storage type error',
+      };
+    }
+  }
+
   static async runAsync(query, ...params) {
     return new Promise((resolve, reject) => {
       db.run(query, ...params, function (err) {
@@ -41,8 +50,8 @@ export class didStore {
     });
   }
   //保存
-  static async importDID({jsonData} = {}) {
-
+  static async importDID({jsonData, storageType} = {}) {
+    await this.validateStorageType(storageType);
     try {
       const didDocumentInstance = new DidDocument(jsonData);
       // 格式校验
@@ -87,7 +96,8 @@ export class didStore {
     }
   }
   //修改
-  static async updateDID({jsonData} = {}) {
+  static async updateDID({jsonData, storageType} = {}) {
+    await this.validateStorageType(storageType);
     try {
       const didDocumentInstance = new DidDocument(jsonData);
       // 格式校验
@@ -143,8 +153,8 @@ export class didStore {
   }
 
   // 根据 did 查询数据并返回
-  static async getDID({did} = {}) {
-
+  static async getDID({did, storageType} = {}) {
+    await this.validateStorageType(storageType);
     try {
       // 根据 did 查询文档
       const query  = `SELECT * FROM did_documents WHERE id = ?`;
@@ -188,8 +198,8 @@ export class didStore {
 
 
   // 根据 did 删除数据
-  static async deleteDID({did} = {}) {
-
+  static async deleteDID({did, storageType} = {}) {
+    await this.validateStorageType(storageType);
     try {
       // 构建 sql
       const deleteQuery = 'DELETE FROM did_documents WHERE id = ?';
@@ -222,7 +232,9 @@ export class didStore {
 
 
   // 根据 did 查询数据并返回
-  static async listDIDs({pageStart, pageSize} = {}) {
+  static async listDIDs({pageStart, pageSize, storageType} = {}) {
+    await this.validateStorageType(storageType);
+
     try {
       pageStart = pageStart?pageStart:1;
       pageSize = pageSize?pageSize:1000;
@@ -275,6 +287,7 @@ export class didStore {
         message: 'System error',
       };
     }
+
   }
   
 }
