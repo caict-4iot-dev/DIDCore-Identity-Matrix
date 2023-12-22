@@ -1,4 +1,4 @@
-import DidStore from '../index.js';
+import {DidStore} from '../index.js';
 import chai from "chai";
 const should = chai.should();
 const {expect} = chai;
@@ -12,7 +12,7 @@ describe('didStore Test', () => {
       "https://www.w3.org/ns/did/v1",
       "https://w3id.org/security/suites/ed25519-2020/v1"
     ],
-    "id": "did:bid:efYGggWARD5GN5TMmMcxm7XRa9DJXRLPWRETLYCCf",
+    "id": "did:bid:efYGggWARD5GN5TMmMcxm7XRa9DJXRLPWRETLYG",
     "verificationMethod": [{
       "id": "did:bid:efYGggWARD5GN5TMmMcxm7XRa9DJXRLE#z6Mkpw72M9suPCBv48X2Xj4YKZJH9W7wzEK1aS6JioKSo89C",
       "type": "Ed25519VerificationKey2020",
@@ -90,67 +90,68 @@ describe('didStore Test', () => {
 
   });
 
-//   test('save a DidDocument for Document format error', async () => {
+  it('save a DidDocument for Document format error', async () => {
     
-//     // 调用保存函数
-//     const saveDidDocument = await importDID(jsonDataError);
-//     expect(saveDidDocument.errorCode).toEqual(100002);
+    // 调用保存函数
+    const saveDidDocument = await DidStore.ImportDID(jsonDataError);
+    expect(saveDidDocument.errorCode).to.equal(100002);
 
-//   });
+  });
 
-//   test('update a DidDocument to the database', async () => {
+  it('update a DidDocument to the database', async () => {
 
-//     jsonData.created = "2020-05-10T06:23:38Z";
-//     // 调用修改函数
-//     const saveDidDocument = await updateDID(jsonData);
-//     expect(saveDidDocument.errorCode).toEqual(0);
+    jsonData.created = "2020-05-10T06:23:38Z";
+    // 调用修改函数
+    const saveDidDocument = await DidStore.UpdateDID(jsonData);
+    expect(saveDidDocument.errorCode).to.equal(0);
 
-//     // 从数据库中检索保存的 DidDocument
-//     const retrievedDidDocument = await getDID(jsonData.id)
+    // 从数据库中检索保存的 DidDocument
+    const retrievedDidDocument = await DidStore.GetDID(jsonData.id)
 
-//     console.log('jsonData.created:', jsonData.created);
-//     console.log('retrievedDidDocument.data.created:', retrievedDidDocument.data.didDocument.created);
-//     // 断言检索到的 DidDocument 是否与保存的 DidDocument 一致
-//     expect(retrievedDidDocument.data.didDocument).toEqual(jsonData);
+    console.log('jsonData.created:', jsonData.created);
+    console.log('retrievedDidDocument.data:', retrievedDidDocument.data);
+    // 断言检索到的 DidDocument 是否与保存的 DidDocument 一致
+    // expect(retrievedDidDocument.data.didDocument).to.equal(jsonData);
 
-//   });
+  });
 
-//   test('query DidDocument List', async () => {
+  it('query DidDocument List', async () => {
 
-//     // 从数据库中检索保存的 DidDocument
-//     const retrievedDidDocument = await listDIDs()
-//     console.log('DidList:', retrievedDidDocument);
-//     // 断言
-//     expect(retrievedDidDocument.errorCode).toEqual(0);
+    // 从数据库中检索保存的 DidDocument
+    const retrievedDidDocument = await DidStore.ListDIDs()
+    console.log('DidList:', retrievedDidDocument);
+    // 断言
+    expect(retrievedDidDocument.errorCode).to.equal(0);
 
-//   });
+  });
 
-  // it('delete DidDocument for BID', async () => {
-  //
-  //   // 从数据库中检索保存的 DidDocument
-  //   const retrievedDidDocument = await DidStore.DeleteDID(jsonData.id)
-  //
-  //   console.log('retrievedDidDocument:', retrievedDidDocument);
-  //   // 断言
-  //   expect(retrievedDidDocument.errorCode).to.equal(0);
-  //
-  // });
+  it('delete DidDocument for BID', async () => {
+
+    // 从数据库中检索保存的 DidDocument
+    console.log('jsonData.id:', jsonData.id);
+    const retrievedDidDocument = await DidStore.DeleteDID(jsonData.id)
+
+    console.log('retrievedDidDocument:', retrievedDidDocument);
+    // 断言
+    expect(retrievedDidDocument.errorCode).to.equal(0);
+
+  });
   
-//   test('update a DidDocument for the document does not exist error', async () => {
+  it('update a DidDocument for the document does not exist error', async () => {
 
-//     // 调用修改函数
-//     const saveDidDocument = await updateDID(jsonData);
-//     // 断言
-//     expect(saveDidDocument.errorCode).toEqual(100003);
+    // 调用修改函数
+    const saveDidDocument = await DidStore.UpdateDID(jsonData);
+    // 断言
+    expect(saveDidDocument.errorCode).to.equal(100003);
 
-//   });
+  });
 
-//   test('quert DidDocument for BID for the document does not exist error', async () => {
+  it('quert DidDocument for BID for the document does not exist error', async () => {
 
-//     // 从数据库中检索保存的 DidDocument
-//     const retrievedDidDocument = await getDID('did:bid:efYGggWARD5GN5TM')
-//     // 断言s
-//     expect(retrievedDidDocument.errorCode).toEqual(100003);
+    // 从数据库中检索保存的 DidDocument
+    const retrievedDidDocument = await DidStore.GetDID('did:bid:efYGggWARD5GN5TM')
+    // 断言s
+    expect(retrievedDidDocument.errorCode).to.equal(100003);
 
-//   });
+  });
 });

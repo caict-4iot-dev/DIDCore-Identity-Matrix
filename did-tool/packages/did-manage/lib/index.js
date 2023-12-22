@@ -5,30 +5,30 @@ export class DidManager extends PluginInterface {
     static async DidManagerCreate() {
         return await didManager.didManagerCreate();
     }
-    static async DidManagerImport({ jsonData } = {}) {
-        return await didManager.didManagerImport(jsonData );
+    static async DidManagerImport( jsonData ) {
+        return await didManager.didManagerImport({jsonData} );
     }
-    DidManagerUpdate({ jsonData } = {}) {
-        return didManager.didManagerUpdate({ jsonData });
+    static async DidManagerUpdate( jsonData ) {
+        return await didManager.didManagerUpdate({ jsonData });
     }
-    DidManagerDelete({ bid } = {}) {
-        return didManager.didManagerDelete({ bid });
+    static async DidManagerDelete( did ) {
+        return await didManager.didManagerDelete({ did });
     }
-    DidManageraddKey({ did,id } = {}) {
-        return didManager.didManageraddKey({ did,id });
+    static async DidManageraddKey( did,id ) {
+        return await didManager.didManageraddKey({ did,id });
     }
-    DidManagerRemoveKey({ did,id } = {}) {
-        return didManager.didManagerRemoveKey({ did,id });
+    static async DidManagerRemoveKey( did,id ) {
+        return await didManager.didManagerRemoveKey({ did,id });
     }
-    DidManagerFind({ bid } = {}) {
-        return didManager.didManagerFind({ bid });
+    static async DidManagerFind( did ) {
+        return await didManager.didManagerFind({ did });
     }
-    DidManagerAddService({ bid, jsonData } = {}) {
-        return didManager.didManagerAddService({ bid, jsonData });
+    static async DidManagerAddService( did, jsonData ) {
+        return await didManager.didManagerAddService({ did, jsonData });
     }
-    DidManagerRemoveService({ bid, id } = {}) {
-        return didManager.didManagerRemoveService({ bid, id });
+    static async DidManagerRemoveService( did, id ) {
+        return await didManager.didManagerRemoveService({ did, id });
     }
 }
 
-export default DidManager
+export default {DidManager}

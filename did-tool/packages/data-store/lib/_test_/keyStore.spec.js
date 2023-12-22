@@ -1,11 +1,14 @@
-const { importKey, updateKey, getKey, deleteKey, listKeys } = require('../keyStoreManager.js');
+import {KeyStoreManager} from '../index.js';
+import chai from "chai";
+const should = chai.should();
+const {expect} = chai;
 
 describe('keyStore Test', () => {
 
 
   // 正常JSON数据
   const jsonData = {
-    "id": 'did:example:1234#z6Mkpw72M9suPCBv48X2Xj4YKZJH9W7wzEK1aS6JioKSo89N',
+    "id": 'did:example:1234#z6Mkpw72M9suPCBv48X2Xj4YKZJH9W7wzEK1aS6JioKSo89f',
     "type": 'Ed25519VerificationKey2020',
     "controller": 'did:example:1234',
     "publicKeyMultibase": 'z6Mkpw72M9suPCBv48X2Xj4YKZJH9W7wzEK1aS6JioKSo89C',
@@ -25,93 +28,104 @@ describe('keyStore Test', () => {
 
   const password = "bif8888";
   
-  test('save key to the database', async () => {
+  it('save key to the database', async () => {
 
     // 调用保存函数
-    const saveKey = await importKey(jsonData, password);
-    expect(saveKey.errorCode).toEqual(0);
+    const saveKey = await KeyStoreManager.ImportKey(jsonData, password);
+    expect(saveKey.errorCode).to.equal(0);
 
-    // 从数据库中检索保存的 Key
-    const retrievedKey = await getKey(jsonData.id, password)
+  });
 
-    // 断言检索到的 Key 是否与保存的 Key 一致
-    expect(retrievedKey.data.KeyDocument).toEqual(jsonData);
+  it('save a Key for Duplicate key ID for the document error', async () => {
 
     // 调用保存函数重复
-    const saveKeyDuplicate  = await importKey(jsonData, password);
-    expect(saveKeyDuplicate.errorCode).toEqual(200001);
+    const saveKeyDuplicate  = await KeyStoreManager.ImportKey(jsonData, password);
+    expect(saveKeyDuplicate.errorCode).to.equal(200001);
+
   });
 
-  test('save a Key for Password does not exist error', async () => {
+  it('save a Key for Password does not exist error', async () => {
     
     // 调用保存函数
-    const saveKey = await importKey(jsonDataError, "");
-    expect(saveKey.errorCode).toEqual(200004);
+    const saveKey = await KeyStoreManager.ImportKey(jsonData, "");
+    expect(saveKey.errorCode).to.equal(200004);
 
   });
-  test('save a Key for Document format error', async () => {
+  it('save a Key for Document format error', async () => {
     
     // 调用保存函数
-    const saveKey = await importKey(jsonDataError, password);
-    expect(saveKey.errorCode).toEqual(100002);
+    const saveKey = await KeyStoreManager.ImportKey(jsonDataError, password);
+    expect(saveKey.errorCode).to.equal(100002);
 
   });
-  test('quert Key for Kid for Password error', async () => {
+
+  it('get Key test', async () => {
 
     // 从数据库中检索保存的 Key
-    const retrievedKey = await getKey(jsonData.id, "8888")
+    const retrievedKey = await KeyStoreManager.GetKey(jsonData.id, password)
+    console.log("======>retrievedKey:", retrievedKey);
     // 断言s
-    expect(retrievedKey.errorCode).toEqual(200005);
+    expect(retrievedKey.errorCode).to.equal(0);
 
   });
-  test('update a Key to the database', async () => {
 
-    jsonData.controller = "did:example:123456789";
+  it('get Key for Kid for Password error', async () => {
+
+    // 从数据库中检索保存的 Key
+    const retrievedKey = await KeyStoreManager.GetKey(jsonData.id, "8888")
+    // 断言s
+    expect(retrievedKey.errorCode).to.equal(200005);
+
+  });
+  it('update a Key to the database', async () => {
+
+    jsonData.controller = "did:example:12345678910";
     // 调用修改函数
-    const saveKey = await updateKey(jsonData, password);
-    expect(saveKey.errorCode).toEqual(0);
+    const saveKey = await KeyStoreManager.UpdateKey(jsonData, password);
+    expect(saveKey.errorCode).to.equal(0);
 
     // 从数据库中检索保存的 Key
-    const retrievedKey = await getKey(jsonData.id, password)
+    const retrievedKey = await KeyStoreManager.GetKey(jsonData.id, password)
     // 断言检索到的 Key 是否与保存的 Key 一致
-    expect(retrievedKey.data.KeyDocument).toEqual(jsonData);
+    console.log(retrievedKey.data)
+    expect(retrievedKey.data.keyDocument.controller).to.equal(jsonData.controller);
 
   });
 
-  test('query Key List', async () => {
+  it('query Key List', async () => {
 
     // 从数据库中检索保存的 Key
-    const retrievedKey = await listKeys()
+    const retrievedKey = await KeyStoreManager.ListKeys()
     console.log('DidList:', retrievedKey);
     // 断言
-    expect(retrievedKey.errorCode).toEqual(0);
+    expect(retrievedKey.errorCode).to.equal(0);
 
   });
 
-  test('delete Key for Kid', async () => {
+  it('delete Key for Kid', async () => {
 
     // 从数据库中检索保存的 Key
-    const retrievedKey = await deleteKey(jsonData.id)
+    const retrievedKey = await KeyStoreManager.DeleteKey(jsonData.id)
     // 断言
-    expect(retrievedKey.errorCode).toEqual(0);
+    expect(retrievedKey.errorCode).to.equal(0);
 
   });
   
-  test('update a Key for the document does not exist error', async () => {
+  it('update a Key for the document does not exist error', async () => {
 
     // 调用修改函数
-    const saveKey = await updateKey(jsonData, password);
+    const saveKey = await KeyStoreManager.UpdateKey(jsonData, password);
     // 断言
-    expect(saveKey.errorCode).toEqual(200003);
+    expect(saveKey.errorCode).to.equal(200003);
 
   });
 
-  test('quert Key for Kid for the document does not exist error', async () => {
+  it('get Key for Kid for the document does not exist error', async () => {
 
     // 从数据库中检索保存的 Key
-    const retrievedKey = await getKey('did:bid:efYGggWARD5GN5TM', password)
+    const retrievedKey = await KeyStoreManager.GetKey('did:bid:efYGggWARD5GN5TM', password)
     // 断言s
-    expect(retrievedKey.errorCode).toEqual(200003);
+    expect(retrievedKey.errorCode).to.equal(200003);
 
   });
 

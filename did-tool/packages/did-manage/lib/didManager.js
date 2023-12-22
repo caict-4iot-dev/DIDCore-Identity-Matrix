@@ -88,12 +88,11 @@ export class didManager {
   }
 
 //保存
-  static async didManagerImport(jsonData) {
+  static async didManagerImport({jsonData} = {}) {
 
     try {
 
       const didDocument = await this.formatJson(jsonData);
-      console.log("didDocument:", didDocument);
       const saveDidDocument = DidStore.ImportDID(didDocument);
       return saveDidDocument;
 
@@ -109,11 +108,11 @@ export class didManager {
   }
 
 //修改
-  static async didManagerUpdate(jsonData) {
+  static async didManagerUpdate({jsonData} = {}) {
 
     try {
       const didDocument = await this.formatJson(jsonData);
-      const updateDidDocument = didStore.updateDID(didDocument)
+      const updateDidDocument = DidStore.UpdateDID(didDocument)
       return updateDidDocument;
 
     } catch (error) {
@@ -129,10 +128,10 @@ export class didManager {
 
 
 //删除
-  static async didManagerDelete(did) {
+  static async didManagerDelete({did} = {}) {
 
     try {
-      const deleteDidDocument = didStore.deleteDID(did)
+      const deleteDidDocument = DidStore.DeleteDID(did)
       return deleteDidDocument;
 
     } catch (error) {
@@ -147,13 +146,13 @@ export class didManager {
   }
 
 //指定 DID 添加一个新的密钥
-  static async didManageraddKey(did,id) {
+  static async didManageraddKey({did, id} = {}) {
 
     try {
-      const didDocumentResult = didStore.getDID(did)
-      let didDocument = (await didDocumentResult).data.didDocument;
+      const didDocumentResult = await DidStore.GetDID(did)
+      let didDocument = didDocumentResult.data.didDocument;
       didDocument.authentication.push(id)
-      const updateDidDocument = didStore.updateDID(didDocument)
+      const updateDidDocument = await DidStore.UpdateDID(didDocument)
       return updateDidDocument;
 
     } catch (error) {
@@ -168,15 +167,15 @@ export class didManager {
   }
 
 //指定 DID 移除一个新的密钥
-  static async didManagerRemoveKey(did,id) {
+  static async didManagerRemoveKey({did, id} = {}) {
 
     try {
-      const didDocumentResult = didStore.getDID(did)
+      const didDocumentResult = DidStore.GetDID(did)
       let didDocument = (await didDocumentResult).data.didDocument;
       let authentication = didDocument.authentication
       const authenticationRemove = authentication.filter(item => item !== id);
       didDocument.authentication = authenticationRemove;
-      const updateDidDocument = didStore.updateDID(didDocument)
+      const updateDidDocument = DidStore.UpdateDID(didDocument)
       return updateDidDocument;
 
     } catch (error) {
@@ -191,11 +190,11 @@ export class didManager {
   }
 
 //查询指定 DID 的 DID 文档
-  static async didManagerFind(did) {
+  static async didManagerFind({did} = {}) {
 
     try {
 
-      const didDocumentResult = didStore.getDID(did)
+      const didDocumentResult = DidStore.GetDID(did)
 
       return didDocumentResult;
 
@@ -211,13 +210,13 @@ export class didManager {
   }
 
 //指定 DID 添加一个service
-  static async didManagerAddService(did, jsonData) {
+  static async didManagerAddService({did, jsonData} = {}) {
 
     try {
-      const didDocumentResult = didStore.getDID(did)
+      const didDocumentResult = DidStore.GetDID(did)
       let didDocument = (await didDocumentResult).data.didDocument;
       didDocument.service.push(jsonData)
-      const updateDidDocument = didStore.updateDID(didDocument)
+      const updateDidDocument = DidStore.UpdateDID(didDocument)
       return updateDidDocument;
 
     } catch (error) {
@@ -232,16 +231,16 @@ export class didManager {
   }
 
 //指定 DID 添加一个service
-  static async didManagerRemoveService(did, id) {
+  static async didManagerRemoveService({did, id} = {}) {
 
     try {
 
-      const didDocumentResult = didStore.getDID(did)
+      const didDocumentResult = DidStore.GetDID(did)
       let didDocument = (await didDocumentResult).data.didDocument;
       let service = didDocument.service
       const serviceRemove = service.filter(item => item.id !== id);
       didDocument.service = serviceRemove;
-      const updateDidDocument = didStore.updateDID(didDocument)
+      const updateDidDocument = DidStore.UpdateDID(didDocument)
       return updateDidDocument;
 
     } catch (error) {
