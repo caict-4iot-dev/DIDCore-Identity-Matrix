@@ -3,6 +3,7 @@ import Tool from '../tool.js';
 import KeyManager from 'key-manager';
 import {DidStore, KeyStoreManager} from 'data-store';
 import {DidManager} from "did-manage";
+import Resolver from "did-resolver";
 import chai from "chai";
 const should = chai.should();
 const {expect} = chai;
@@ -13,10 +14,12 @@ const km = new KeyManager();
 const ds = new DidStore();
 const ksm = new KeyStoreManager();
 const dm = new DidManager();
+const rs = new Resolver()
 tool.registerPlugin(km);
 tool.registerPlugin(ds);
 tool.registerPlugin(ksm);
 tool.registerPlugin(dm);
+tool.registerPlugin(rs);
 describe('key-manager test', () => {
     it('should generate a key pair', async () => {
         const generateResult1 = await tool.executePluginMethods(km, 'Generate');
@@ -109,12 +112,12 @@ describe('didStore test', () => {
     };
     it('save a DidDocument to the database', async () => {
         // 调用保存函数
-        const saveDidDocument = await tool.executePluginMethods(ds, 'ImportDID', jsonData);
+        const saveDidDocument = await tool.executePluginMethods(ds, 'ImportDID', jsonData, "sqlite");
         expect(saveDidDocument.errorCode).to.equal(0);
     });
     it('get a DidDocument to the database', async () => {
         // 从数据库中检索保存的 DidDocument
-        const retrievedDidDocument = await tool.executePluginMethods(ds, 'GetDID', jsonData.id);
+        const retrievedDidDocument = await tool.executePluginMethods(ds, 'GetDID', jsonData.id, "sqlite");
         console.log('retrievedDidDocument:', retrievedDidDocument.data.didDocument);
         // 断言
         expect(retrievedDidDocument.errorCode).to.equal(0);
@@ -122,12 +125,12 @@ describe('didStore test', () => {
     it('update a DidDocument to the database', async () => {
         jsonData.created = "2020-05-10T06:23:38Z";
         // 调用修改函数
-        const saveDidDocument = await tool.executePluginMethods(ds, 'UpdateDID', jsonData);
+        const saveDidDocument = await tool.executePluginMethods(ds, 'UpdateDID', jsonData, "sqlite");
         expect(saveDidDocument.errorCode).to.equal(0);
     });
     it('query DidDocument List', async () => {
         // 从数据库中检索保存的 DidDocument
-        const retrievedDidDocument = await tool.executePluginMethods(ds, 'ListDIDs');
+        const retrievedDidDocument = await tool.executePluginMethods(ds, 'ListDIDs', "sqlite");
         console.log('DidList:', retrievedDidDocument);
         // 断言
         expect(retrievedDidDocument.errorCode).to.equal(0);
@@ -135,7 +138,7 @@ describe('didStore test', () => {
     it('delete DidDocument for BID', async () => {
         // 从数据库中删除 DidDocument
         console.log('jsonData.id:', jsonData.id);
-        const retrievedDidDocument = await tool.executePluginMethods(ds, 'DeleteDID', jsonData.id);
+        const retrievedDidDocument = await tool.executePluginMethods(ds, 'DeleteDID', jsonData.id, "sqlite");
         console.log('retrievedDidDocument:', retrievedDidDocument);
         // 断言
         expect(retrievedDidDocument.errorCode).to.equal(0);
@@ -167,13 +170,13 @@ describe('keyStore test', () => {
 
     it('save key to the database', async () => {
         // 调用保存函数
-        const saveKey = await tool.executePluginMethods(ksm, 'ImportKey', jsonData,password);
+        const saveKey = await tool.executePluginMethods(ksm, 'ImportKey', jsonData,password, "sqlite");
         expect(saveKey.errorCode).to.equal(0);
     });
 
     it('get Key test', async () => {
         // 从数据库中检索保存的 Key
-        const retrievedKey = await tool.executePluginMethods(ksm, 'GetKey', jsonData.id, password);
+        const retrievedKey = await tool.executePluginMethods(ksm, 'GetKey', jsonData.id, password, "sqlite");
         console.log("======>retrievedKey:", retrievedKey);
         // 断言s
         expect(retrievedKey.errorCode).to.equal(0);
@@ -182,13 +185,13 @@ describe('keyStore test', () => {
     it('update a Key to the database', async () => {
         jsonData.controller = "did:example:12345678910";
         // 调用修改函数
-        const saveKey = await tool.executePluginMethods(ksm, 'UpdateKey', jsonData, password);
+        const saveKey = await tool.executePluginMethods(ksm, 'UpdateKey', jsonData, password, "sqlite");
         expect(saveKey.errorCode).to.equal(0);
     });
 
     it('query Key List', async () => {
         // 从数据库中检索保存的 Key
-        const retrievedKey = await tool.executePluginMethods(ksm, 'ListKeys');
+        const retrievedKey = await tool.executePluginMethods(ksm, 'ListKeys', "sqlite");
         console.log('DidList:', retrievedKey);
         // 断言
         expect(retrievedKey.errorCode).to.equal(0);
@@ -196,7 +199,7 @@ describe('keyStore test', () => {
 
     it('delete Key for Kid', async () => {
         // 从数据库中检索保存的 Key
-        const retrievedKey = await tool.executePluginMethods(ksm, 'DeleteKey', jsonData.id);
+        const retrievedKey = await tool.executePluginMethods(ksm, 'DeleteKey', jsonData.id, "sqlite");
         // 断言
         expect(retrievedKey.errorCode).to.equal(0);
     });
@@ -258,25 +261,25 @@ describe('didManage Test', () => {
 
     it('didManagerImport Test', async () => {
         // 调用保存函数
-        const didDocumentImport = await tool.executePluginMethods(dm, 'DidManagerImport',jsonData);
+        const didDocumentImport = await tool.executePluginMethods(dm, 'DidManagerImport',jsonData, "sqlite");
         expect(didDocumentImport.errorCode).to.equal(0);
     });
 
     it('update a DidDocument', async () => {
         jsonData.services.id = "did:fake:receiverWithMediation2";
         // 调用修改函数
-        const saveDidDocument = await tool.executePluginMethods(dm, 'DidManagerUpdate',jsonData);
+        const saveDidDocument = await tool.executePluginMethods(dm, 'DidManagerUpdate',jsonData, "sqlite");
         expect(saveDidDocument.errorCode).to.equal(0);
     });
 
     it('didManageraddKey it', async () => {
-        const result = await tool.executePluginMethods(dm, 'DidManageraddKey',jsonData.did,"did:bid:efYGggWARD5GN5TMmMcxm7XRa9DJXRPP#z6Mkpw72M9suPCBv48X2Xj4YKZJH9W7wzEK1aS6JioKSo89C");
+        const result = await tool.executePluginMethods(dm, 'DidManageraddKey',jsonData.did,"did:bid:efYGggWARD5GN5TMmMcxm7XRa9DJXRPP#z6Mkpw72M9suPCBv48X2Xj4YKZJH9W7wzEK1aS6JioKSo89C", "sqlite");
         // 断言
         expect(result.errorCode).to.equal(0);
     });
 
     it('didManagerRemoveKey it', async () => {
-        const result = await tool.executePluginMethods(dm, 'DidManagerRemoveKey',jsonData.did,jsonData.extension[0]);
+        const result = await tool.executePluginMethods(dm, 'DidManagerRemoveKey',jsonData.did,jsonData.extension[0], "sqlite");
         // 断言
         expect(result.errorCode).to.equal(0);
     });
@@ -295,30 +298,40 @@ describe('didManage Test', () => {
                 }
             ]
         }
-        const result = await tool.executePluginMethods(dm, 'DidManagerAddService',jsonData.did,serviceData);
+        const result = await tool.executePluginMethods(dm, 'DidManagerAddService',jsonData.did,serviceData, "sqlite");
         // 断言
         expect(result.errorCode).to.equal(0);
     });
 
     it('didManagerRemoveService it', async () => {
-        const result = await tool.executePluginMethods(dm, 'DidManagerRemoveService',jsonData.did,"did:fake:receiverWithMediation2");
+        const result = await tool.executePluginMethods(dm, 'DidManagerRemoveService',jsonData.did,"did:fake:receiverWithMediation2", "sqlite");
         // 断言
         expect(result.errorCode).to.equal(0);
     });
 
     it('didManagerFind it', async () => {
-        const result = await tool.executePluginMethods(dm, 'DidManagerFind',jsonData.did);
+        const result = await tool.executePluginMethods(dm, 'DidManagerFind',jsonData.did, "sqlite");
         // 断言
         expect(result.errorCode).to.equal(0);
     });
 
     it('delete didManagerDelete', async () => {
         // 从数据库中检索保存的 DidDocument
-        const result = await tool.executePluginMethods(dm, 'DidManagerDelete',jsonData.did);
+        const result = await tool.executePluginMethods(dm, 'DidManagerDelete',jsonData.did, "sqlite");
         // 断言
         expect(result.errorCode).to.equal(0);
     });
 
+});
+describe('did-resolver test', () => {
+    it('get resolver', async () => {
+        const providerConfig = {
+            rpcUrl: 'https://dev.uniresolver.io/1.0/identifiers',
+            did:'did:bid:efeAfxWduXFTGfV7LtVRhtRLaigixcMf'
+        }
+        const generateResult1 = await tool.executePluginMethods(rs, 'GetPublicKey', providerConfig);
+        console.log('generateResult1:', generateResult1)
+    });
 });
 
 

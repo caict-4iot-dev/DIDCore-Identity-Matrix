@@ -4,7 +4,8 @@
   "dependencies": {
     "data-store": "workspace:^",
     "key-manager": "workspace:^",
-    "did-manage": "workspace:^"
+    "did-manage": "workspace:^",
+    "did-resolver": "workspace:^"
   },
   "type": "module"
 }

@@ -1,0 +1,23 @@
+{
+  "name": "did-resolver",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "request-promise": "^4.2.2",
+    "json-bigint": "^1.0.0",
+    "is-type-of": "^1.2.1",
+    "tool": "workspace:^"
+  },
+  "type": "module",
+  "moduleDirectories": [
+    "node_modules",
+    "lib"
+  ]
+}
