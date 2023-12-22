@@ -130,7 +130,7 @@ describe('didStore test', () => {
     });
     it('query DidDocument List', async () => {
         // 从数据库中检索保存的 DidDocument
-        const retrievedDidDocument = await tool.executePluginMethods(ds, 'ListDIDs', "sqlite");
+        const retrievedDidDocument = await tool.executePluginMethods(ds, 'ListDIDs',1, 1000, "sqlite");
         console.log('DidList:', retrievedDidDocument);
         // 断言
         expect(retrievedDidDocument.errorCode).to.equal(0);
@@ -191,7 +191,7 @@ describe('keyStore test', () => {
 
     it('query Key List', async () => {
         // 从数据库中检索保存的 Key
-        const retrievedKey = await tool.executePluginMethods(ksm, 'ListKeys', "sqlite");
+        const retrievedKey = await tool.executePluginMethods(ksm, 'ListKeys', 1, 1000,"sqlite");
         console.log('DidList:', retrievedKey);
         // 断言
         expect(retrievedKey.errorCode).to.equal(0);
@@ -320,6 +320,15 @@ describe('didManage Test', () => {
         const result = await tool.executePluginMethods(dm, 'DidManagerDelete',jsonData.did, "sqlite");
         // 断言
         expect(result.errorCode).to.equal(0);
+    });
+    it('didManagerCreate Test', async () => {
+        // 调用保存函数
+        const didDocumentCreate = await tool.executePluginMethods(dm, 'DidManagerCreate');
+        const didDocument = didDocumentCreate.data.didDocument;
+        let publicKeyMultibase = didDocument.verificationMethod[0].publicKeyMultibase;
+        const verify = await tool.executePluginMethods(dm, 'Verify', didDocument, publicKeyMultibase);
+        expect(verify.errorCode).to.equal(0);
+        expect(verify.data.verify).to.equal(true);
     });
 
 });
