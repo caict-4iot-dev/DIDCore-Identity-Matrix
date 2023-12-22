@@ -1,4 +1,4 @@
-import {KeyStoreManager} from '../index.js';
+import {KeyStoreManager} from '../../index.js';
 import chai from "chai";
 const should = chai.should();
 const {expect} = chai;

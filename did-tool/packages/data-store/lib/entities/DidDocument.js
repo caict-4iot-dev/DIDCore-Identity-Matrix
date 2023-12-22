@@ -1,3 +1,4 @@
+
 class DidDocument {
     constructor(data) {
         this['@context'] = data['@context'] || [];

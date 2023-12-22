@@ -1,5 +1,5 @@
-import { didStore } from './didStore.js';
-import { keyStoreManager } from './keyStoreManager.js';
+import { didStore } from './lib/didStore.js';
+import { keyStoreManager } from './lib/keyStoreManager.js';
 import PluginInterface from 'tool/plugin-interface.js';
 
 export class DidStore extends PluginInterface {

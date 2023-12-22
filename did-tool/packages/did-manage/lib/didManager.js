@@ -1,5 +1,6 @@
-import {DidStore} from 'data-store/lib/index.js';
+
 import BIFCoreSDK from "bifcore-sdk-nodejs";
+import {DidStore} from 'data-store';
 
 export class didManager {
 

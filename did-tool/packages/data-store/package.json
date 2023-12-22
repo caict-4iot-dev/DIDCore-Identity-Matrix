@@ -10,9 +10,10 @@
   "publishConfig": {
     "access": "public"
   },
+  "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/decentralized-identity/veramo.git",
+    "url": "https://github.com/caict-4iot-dev/DIDCore-Identity-Matrix.git",
     "directory": "packages/data-store"
   },
   "keywords": [

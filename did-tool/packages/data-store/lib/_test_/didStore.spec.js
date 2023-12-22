@@ -1,4 +1,4 @@
-import {DidStore} from '../index.js';
+import {DidStore} from '../../index.js';
 import chai from "chai";
 const should = chai.should();
 const {expect} = chai;

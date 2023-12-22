@@ -1,6 +1,6 @@
 import PluginInterface from './plugin-interface.js';
 
-class MainApplication {
+class Tool {
   constructor() {
     this.plugins = [];
   }
@@ -13,7 +13,7 @@ class MainApplication {
     this.plugins.push(plugin);
   }
 
-  executeAllPluginsMethods(plugin, methodName, ...params) {
+  executePluginMethods(plugin, methodName, ...params) {
     if (this.plugins.includes(plugin)) {
       const result =  plugin.executeMethod(methodName, ...params);
       return result
@@ -23,4 +23,4 @@ class MainApplication {
   }
 }
 
-export default MainApplication;
+export default Tool;
