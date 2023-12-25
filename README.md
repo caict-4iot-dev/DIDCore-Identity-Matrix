@@ -1,63 +1,14 @@
-#  Entry name
+## Plugins Architecture
 
-bifcore-sdk-nodejs,the interface between Spark Chain Network and underlying blockchain platform is provided through API call
+![image-20231201174725296](G:/区块链/1.项目/31.DID开源项目/image-20231201174725296.png)
 
-## Functional characteristics
+DIDCore-Identity-Matrix is responsible for but not limited to:
 
-The BIF-Core-SDK provides interfaces such as Spark Chain-underlying blockchain platform public and private key pair generation, Spark Chain-underlying blockchain platform private key signature public key verification, account service, block service, transaction service, etc. through API calls. At the same time, it also provides interface use examples to illustrate that developers can call the SDK to easily and quickly generate fast access to the main chain of Spark Chain.Let developers can all use bifcore services more easily.
-
-## Quick Start
-
-  Create bifcore-sdk-nodejs instance:
-
-```js
-'use strict' 
-
-const BIFCoreSDK = require('bifcore-sdk-nodejs');
-
-const sdk = new BIFCoreSDK({
-  host: 'http://test.bifcore.bitfactory.cn/'
-});
-
-```
-
-
-### Installation
-
-This is a [Node.js](https://nodejs.org/en/) module available through the
-[npm registry](https://www.npmjs.com/).
-
-Before installing, [download and install Node.js](https://nodejs.org/en/download/).
-Node.js 6.0.0 or higher is required.
-
-Installation is done using the
-[`npm install` command](https://docs.npmjs.com/getting-started/installing-npm-packages-locally):
-
-```bash
-$ npm install bifcore-sdk-nodejs --save
-```
-
-### Structure
-
-To run the test suite, first install the dependencies:
-
-```bash
-$ npm install
-```
-
-### Function
-
-then run `npm test`:
-
-```
-$ npm test
-```
-
-## Use guide
-
-- Bif-chain-sdk-js directory: BIF-Core-SDK-JS open source code  
-- Bif-chain-sdk-js-example directory: BIF-Core-SDK-JS development kit demonstration example
-- [Documentation](doc/BIFCore-SDK-Nodejs.md)
+- Creating Identifiers
+- Resolving Identifiers
+- Credential Issuance
+- Credential Revocation
+- Credential Exchange
 
 ## How to contribute
 
@@ -75,7 +26,7 @@ We will reply as soon as possible.
 
 ## About the author
 
-Adhering to the concept of open source and openness, the CAICT has fully opened the Spark "BID-Core-SDK-JS" to the community and the public, helping partners in the whole industry to improve the efficiency of data value circulation and achieve data value transformation.
+Adhering to the concept of open source and openness, the CAICT has fully opened the Spark "DIDCore-Identity-Matrix" to the community and the public, helping partners in the whole industry to improve the efficiency of data value circulation and achieve data value transformation.
 
 ## License
 

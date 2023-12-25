@@ -14,7 +14,7 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "https://github.com/caict-4iot-dev/DIDCore-Identity-Matrix.git",
+    "url": "http://git.xinghuo.space/xinghuo-open-source/didcore-identity-matrix.git",
     "directory": "packages/did-manage"
   },
   "keywords": [
