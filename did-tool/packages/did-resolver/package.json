@@ -21,7 +21,7 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "http://git.xinghuo.space/xinghuo-open-source/did/didcore-identity-matrix.git",
+    "url": "https://git.xinghuo.space/xinghuo-open-source/did/didcore-identity-matrix.git",
     "directory": "packages/did-resolver"
   },
   "keywords": [
