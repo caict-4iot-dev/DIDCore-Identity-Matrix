@@ -1,34 +1,34 @@
-## Plugins Architecture
+## 插件架构
 
 <img src=".\images\image-20231201174725296.png" alt="image-20231201174725296" style="zoom:80%;" />
 
-DIDCore-Identity-Matrix is responsible for but not limited to:
+DIDCore-Identity-Matrix 功能但不限于:
 
-- Creating Identifiers
-- Resolving Identifiers
-- Credential Issuance
-- Credential Revocation
-- Credential Exchange
+- 创建标识
+- 解析标识
+- 凭证颁发
+- 凭证注销
+- 凭证交互
 
-## How to contribute
+## 问题反馈
 
-Welcome to participate in the ecological construction of the main chain service of "Spark · Chain Network":
+欢迎参与“星火开源“的生态建设：
 
-1. If the project is helpful to you, please light up our little star (click the Star button above the project).
+1. 如项目对您有帮助，欢迎点亮我们的小星星(点击项目上方Star按钮)。
 
-2. Welcome to submit code (Pull requests).
+2. 欢迎提交代码(Pull requests)。
 
-3. Ask questions and submit BUGs.
+3. 提问和提交BUG。
 
-4. Email feedback: guoshijie@caict.ac.cn
+4. 邮件反馈：[guoshijie@caict.ac.cn](mailto:guoshijie@caict.ac.cn)
 
-We will reply as soon as possible.
+   我们将尽快给予回复。
 
-## About the author
+## 发行说明
 
-Adhering to the concept of open source and openness, the CAICT has fully opened the Spark "DIDCore-Identity-Matrix" to the community and the public, helping partners in the whole industry to improve the efficiency of data value circulation and achieve data value transformation.
+各版本更新将记录在CHANGELOG中。
 
-## License
+## 许可证
 
 [Apache-2.0](http://www.apache.org/licenses/LICENSE-2.0)
 
