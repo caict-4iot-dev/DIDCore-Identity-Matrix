@@ -13,7 +13,7 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "http://git.xinghuo.space/xinghuo-open-source/didcore-identity-matrix.git",
+    "url": "http://git.xinghuo.space/xinghuo-open-source/did/didcore-identity-matrix.git",
     "directory": "packages/data-store"
   },
   "keywords": [
