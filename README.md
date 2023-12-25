@@ -1,6 +1,6 @@
 ## Plugins Architecture
 
-![image-20231201174725296](G:/区块链/1.项目/31.DID开源项目/image-20231201174725296.png)
+<img src=".\images\image-20231201174725296.png" alt="image-20231201174725296" style="zoom:80%;" />
 
 DIDCore-Identity-Matrix is responsible for but not limited to:
 
