@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="20px" height="20px" viewBox="0 0 20 20" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <title>编组</title>
+    <g id="原型图" stroke="none" stroke-width="1" fill="none" fill-rule="evenodd">
+        <g id="个人中心-基本信息" transform="translate(-1739, -202)" fill="#FFFFFF" fill-rule="nonzero">
+            <g id="主页" transform="translate(280, 68)">
+                <g id="编组-4" transform="translate(1436, 120)">
+                    <g id="编组" transform="translate(23, 14)">
+                        <path d="M14.3620085,7.08187278 L9.67000826,2.3458885 L1.77677555,10.1658889 L6.46855255,14.9018732 L14.3620085,7.08187278 Z M16.7300007,4.73598428 L12.0380004,0 L10.4594878,1.56400009 L15.1512648,6.29998437 L16.7300007,4.73598428 L16.7300007,4.73598428 Z M5.67929626,15.6837616 L0.987519257,10.9480006 L0.175489518,16.4437697 L5.67929626,15.6837616 Z M0,17.7318091 L0,19.9540066 L20,19.9540066 L20,17.7318091 L0,17.7318091 Z" id="形状"></path>
+                    </g>
+                </g>
+            </g>
+        </g>
+    </g>
+</svg>

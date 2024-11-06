@@ -1,0 +1,124 @@
+/* 第三方图标字体间距/大小设置
+------------------------------- */
+@mixin generalIcon {
+	font-size: 14px !important;
+	display: inline-block;
+	vertical-align: middle;
+	margin-right: 5px;
+	width: 24px;
+	text-align: center;
+	justify-content: center;
+}
+@mixin line-height($height) {
+    height: $height;
+    line-height: $height;
+}
+@mixin padding($top, $right, $bottom, $left) {
+    padding: $top $right $bottom $left;
+    box-sizing: border-box;
+}
+@mixin radius($size: 50px) {
+    width:$size;
+    height:$size;
+    border-radius: 50%;
+  }
+@mixin abs($top: auto, $right: auto, $bottom: auto, $left: auto, $z: 0) {
+    position: absolute;
+    top: $top;
+    right: $right;
+    bottom: $bottom;
+    left: $left;
+    z-index: $z;
+}
+
+@mixin font-style($size, $weight, $line-height,$f-family) {
+	font-family: $f-family;
+	font-style: normal;
+	font-weight: $weight;
+	font-size: $size;
+	line-height: $line-height;
+}
+@mixin box-shadow($shadow...) {
+    @if $enableShadows {
+      $result: ();
+
+      @if (length($shadow) == 1) {
+        // We can pass `@include box-shadow(none);`
+        $result: $shadow;
+      } @else {
+        // Filter to avoid invalid properties for example `box-shadow: none, 1px 1px black;`
+        @for $i from 1 through length($shadow) {
+          @if nth($shadow, $i) != "none" {
+            $result: append($result, nth($shadow, $i), "comma");
+          }
+        }
+      }
+      @if (length($result) > 0) {
+        box-shadow: $result;
+      }
+    }
+  }
+  @mixin flex($direction:row,$justify:center,$align:center,$flex-wrap:nowrap) {
+	display: -webkit-flex;
+	display: flex;
+	@if ($direction!=null) {
+	  flex-direction: $direction;
+	}
+	@if ($justify!=null) {
+	  justify-content: $justify;
+	}
+	@if ($align!=null) {
+	  align-items: $align;
+	}
+	@if ($flex-wrap != null) {
+	  flex-wrap: $flex-wrap;
+	}
+  }
+  @mixin line-height($h) {
+    line-height: $h;
+    height: $h;
+  }
+/* 文本不换行
+------------------------------- */
+@mixin text-no-wrap() {
+	text-overflow: ellipsis;
+	overflow: hidden;
+	white-space: nowrap;
+}
+
+/* 多行文本溢出
+  ------------------------------- */
+@mixin text-ellipsis($line: 2) {
+	overflow: hidden;
+	word-break: break-all;
+	text-overflow: ellipsis;
+	display: -webkit-box;
+	-webkit-line-clamp: $line;
+	-webkit-box-orient: vertical;
+}
+
+/* 滚动条(页面未使用) div 中使用：
+  ------------------------------- */
+// .test {
+//   @include scrollBar;
+// }
+@mixin scrollBar {
+	// 滚动条凹槽的颜色，还可以设置边框属性
+	&::-webkit-scrollbar-track-piece {
+		background-color: #f8f8f8;
+	}
+	// 滚动条的宽度
+	&::-webkit-scrollbar {
+		width: 9px;
+		height: 9px;
+	}
+	// 滚动条的设置
+	&::-webkit-scrollbar-thumb {
+		background-color: #dddddd;
+		background-clip: padding-box;
+		min-height: 28px;
+	}
+	&::-webkit-scrollbar-thumb:hover {
+		background-color: #bbb;
+	}
+}

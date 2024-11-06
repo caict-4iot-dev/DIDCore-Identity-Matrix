@@ -1,0 +1,186 @@
+/*
+ * CSS Reset
+ */
+// Document
+* {
+    -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box;
+}
+html {
+    -ms-text-size-adjust: 100%;  -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+
+// Sections
+body {
+    margin: 0; padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", "PingFang SC", "Microsoft YaHei", "Source Han Sans SC", "Noto Sans CJK SC", "WenQuanYi Micro Hei", sans-serif;
+    font-size: 14px; line-height: 1.15;
+    -webkit-overflow-scrolling: touch;
+}
+main {
+    display: block;
+}
+ul, ol, li, dl, dt, dd {
+    list-style: none outside none;
+    margin: 0; padding: 0;
+}
+ul, ol {
+    list-style: none outside none;
+}
+
+// Table
+table {
+    border-collapse: collapse; border-spacing: 0;
+}
+th, td {
+    padding: 0;
+}
+
+// Embedded content
+img {
+    border: 0; vertical-align: middle;
+}
+
+// Forms
+button, input, optgroup, select, textarea {
+    margin: 0;
+    outline: none;
+    font-family: inherit; font-size: 100%; line-height: 1.15;
+}
+button, select {
+    text-transform: none;
+}
+button, input[type="button"], input[type="reset"], input[type="submit"] {
+    -webkit-appearance: button; cursor: pointer;
+}
+button[disabled], input[disabled] {
+    cursor: default;
+}
+input {
+    line-height: normal;
+}
+input[type="checkbox"], input[type="radio"] {
+    box-sizing: border-box; padding: 0;
+}
+input[type="number"]::-webkit-inner-spin-button, input[type="number"]::-webkit-outer-spin-button {
+    height: auto; -webkit-appearance: none;
+}
+input[type="search"] {
+    -webkit-appearance: textfield; -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box; box-sizing: border-box;
+    outline-offset: -2px;
+}
+::-webkit-file-upload-button {
+    -webkit-appearance: button;
+    font: inherit;
+}
+/*取消ie下的输入框的大×和眼睛*/
+::-ms-clear,::-ms-reveal{display:none;}
+input[type="text"],
+input[type="search"]::-webkit-search-cancel-button,
+input[type="search"]::-webkit-search-decoration {
+    -webkit-appearance: none;
+}
+button::-moz-focus-inner,
+[type="button"]::-moz-focus-inner,
+[type="reset"]::-moz-focus-inner,
+[type="submit"]::-moz-focus-inner {
+    padding: 0; border-style: none;
+}
+button:-moz-focusring,
+[type="button"]:-moz-focusring,
+[type="reset"]:-moz-focusring,
+[type="submit"]:-moz-focusring {
+    outline: 1px dotted ButtonText;
+}
+legend {
+    display: table;
+    max-width: 100%;
+    margin: 0; padding: 0;
+    color: inherit; white-space: normal;
+    box-sizing: border-box;
+}
+fieldset {
+    padding: 0.35em 0.75em 0.625em;
+}
+progress {
+    vertical-align: baseline;
+}
+textarea { overflow: auto; resize: vertical; }
+
+// Interactive
+details {
+    display: block;
+}
+summary {
+    display: list-item;
+}
+
+
+// Text-level semantics
+h1, h2, h3, h4, h5, h6, p, figure, form, blockquote {
+    margin: 0;
+}
+ul, ol, li, dl, dt, dd {
+    margin: 0; padding: 0;
+}
+ul, ol {
+    list-style: none outside none;
+}
+h1, h2, h3 {
+    line-height: 1.15; font-weight: normal;
+}
+h1 {
+    font-size: 24px;
+}
+h2 {
+    font-size: 20px;
+}
+h3 {
+    font-size: 16px;
+}
+b, strong {
+    font-weight: bolder;
+}
+abbr[title] {
+    border-bottom: none;
+    text-decoration: underline;
+    text-decoration: underline dotted;
+}
+code, kbd, samp {
+    font-family: monospace, monospace;
+    font-size: 1em;
+}
+small {
+    font-size: 80%;
+}
+sub, sup {
+    font-size: 75%;
+    line-height: 0;
+    position: relative;
+    vertical-align: baseline;
+}
+sub {
+    bottom: -0.25em;
+}
+sup {
+    top: -0.5em;
+}
+a {
+    background: transparent; text-decoration: none;
+    -webkit-tap-highlight-color: rgba(255, 0, 0, 0);
+}
+a:active {
+    outline: 0;
+}
+
+// Misc
+template {
+    display: none;
+}
+[hidden] {
+    display: none;
+}
+i, cite, em, var, address, dfn{
+    font-style:normal;
+}

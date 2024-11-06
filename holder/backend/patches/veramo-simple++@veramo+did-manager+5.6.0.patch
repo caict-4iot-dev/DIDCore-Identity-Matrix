@@ -1,0 +1,28 @@
+diff --git a/node_modules/veramo-simple/node_modules/@veramo/did-manager/build/id-manager.js b/node_modules/veramo-simple/node_modules/@veramo/did-manager/build/id-manager.js
+index e363067..8823709 100644
+--- a/node_modules/veramo-simple/node_modules/@veramo/did-manager/build/id-manager.js
++++ b/node_modules/veramo-simple/node_modules/@veramo/did-manager/build/id-manager.js
+@@ -69,7 +69,7 @@ export class DIDManager {
+             }
+             catch (e) { }
+             if (existingIdentifier) {
+-                throw Error(`illegal_argument: Identifier with alias: ${args.alias} already exists: ${existingIdentifier.did}`);
++                return '该用户已存在'
+             }
+         }
+         const identifierProvider = this.getProvider(providerName);
+diff --git a/node_modules/veramo-simple/node_modules/@veramo/did-manager/src/id-manager.ts b/node_modules/veramo-simple/node_modules/@veramo/did-manager/src/id-manager.ts
+index 116b5e3..891e29a 100644
+--- a/node_modules/veramo-simple/node_modules/@veramo/did-manager/src/id-manager.ts
++++ b/node_modules/veramo-simple/node_modules/@veramo/did-manager/src/id-manager.ts
+@@ -109,9 +109,7 @@ export class DIDManager implements IAgentPlugin {
+         existingIdentifier = await this.store.getDID({ alias: args.alias })
+       } catch (e) {}
+       if (existingIdentifier) {
+-        throw Error(
+-          `illegal_argument: Identifier with alias: ${args.alias} already exists: ${existingIdentifier.did}`,
+-        )
++        return '该用户已存在'
+       }
+     }
+     const identifierProvider = this.getProvider(providerName)

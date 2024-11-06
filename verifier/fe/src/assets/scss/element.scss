@@ -1,0 +1,157 @@
+@import 'mixins/index.scss';
+
+/* Button 按钮
+------------------------------- */
+// 第三方字体图标大小
+.el-button:not(.is-circle) i.el-icon,
+.el-button i.iconfont,
+.el-button i.fa,
+.el-button--default i.iconfont,
+.el-button--default i.fa {
+	font-size: 14px !important;
+	margin-right: 5px;
+}
+.el-button--small i.iconfont,
+.el-button--small i.fa {
+	font-size: 12px !important;
+	margin-right: 5px;
+}
+.el-button.is-plain{
+	background: none;
+	&:hover,
+	&:active,
+	&:focus{
+		color:#409eff;
+	}
+}
+.el-button--primary,
+.el-button--primary:hover,
+.el-button--primary:focus{
+	background: #0070F0;
+	border-color:#0070F0;
+}
+/* Input 输入框、InputNumber 计数器
+------------------------------- */
+// 菜单搜索
+.el-autocomplete-suggestion__wrap {
+	max-height: 280px !important;
+}
+
+  
+/* NavMenu 导航菜单
+------------------------------- */
+// 鼠标 hover 时颜色
+.el-menu-hover-bg-color {
+	background-color: #0070F0 !important;
+}
+// 默认样式修改
+.el-menu {
+	border-right: none !important;
+	width: 220px;
+}
+.el-menu-item {
+	height: 100% !important;
+	line-height: 100% !important;
+}
+.el-menu-item,
+.el-sub-menu__title {
+	color: var(--next-bg-menuBarColor);
+	font-size: 16px;
+} 
+// 第三方图标字体间距/大小设置
+.el-menu-item .iconfont,
+.el-sub-menu .iconfont,
+.el-menu-item .fa,
+.el-sub-menu .fa {
+	@include generalIcon;
+} 
+// 横向菜单（经典、横向）布局
+.el-menu.el-menu--horizontal {
+	border-bottom: none !important;
+	width: 100% !important;
+	.el-menu-item,
+	.el-sub-menu{
+		position: relative;
+		padding:0 27px !important;
+	}
+	.el-sub-menu__title{
+		padding:0;
+		border:0;
+		.el-icon{
+			right: -20px;
+		}
+	}
+	.el-menu-item, 
+	.el-sub-menu,
+	.el-menu-item:not(.is-active):focus { 
+		height: 36px !important;
+		line-height: 36px !important;
+		border: 0;
+		padding:0;
+		border-radius: 5px;
+		color: #333;
+		font-size: 16px;
+		font-weight: 400;
+		background-color: #fff; 
+	}
+	.el-sub-menu.is-active{
+		.el-sub-menu__title {
+			border:0;
+			color:#0167FE;
+		}
+	}
+	.el-menu-item.is-active,
+	.el-menu-item:hover,
+	.el-sub-menu.is-active,
+	.el-sub-menu:hover{
+		color:#0167FE !important;
+		background: none !important;
+		&::before{
+			content: '';
+			display: block;
+			width: 30px;
+			height: 2px;
+			background: #0167FE;
+			position: absolute;
+			bottom:-18px;
+			left: 50%;
+			transform: translateX(-50%);
+		}
+	}
+	.el-menu-item:not(.is-active):hover, 
+	.el-sub-menu:not(.is-active):hover .el-sub-menu__title {
+		color: #0167FE;
+		background: none !important;
+	}
+}
+.el-popper{
+	box-shadow: 0px 2px 10px 1px rgba(45,79,130,0.1);
+	border-radius: 6px;
+	border: 1px solid #EEEEEE;
+	.el-menu--popup{
+		width: auto;
+		min-width: auto;
+		border:0;
+		.el-menu-item{
+			padding:6px 20px 0 12px;
+			font-size: 14px;
+			height: auto !important;
+			color: #333333;
+			line-height: 20px !important;
+			&:hover,
+			&.is-active{
+				background: none;
+				color: #0167FE;
+			}
+		}
+	}
+}
+
+.el-pagination .btn-next, .el-pagination .btn-prev, .el-pagination .el-pager li{
+	border-radius: 50%;
+	width: 32px;
+	height: 32px;
+	&.is-active{
+		background-color: #0167FE !important;
+	}
+}

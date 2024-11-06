@@ -1,0 +1,62 @@
+{
+	"name": "egg",
+	"version": "1.0.0",
+	"description": "",
+	"private": true,
+	"egg": {
+		"declarations": true
+	},
+	"dependencies": {
+		"@caict/bif-encryption": "^1.0.1",
+		"@ethersproject/shims": "^5.7.0",
+		"@veramo/core": "^6.0.0",
+		"@veramo/credential-w3c": "^6.0.0",
+		"@veramo/data-store": "^6.0.0",
+		"@veramo/did-manager": "^6.0.0",
+		"@veramo/did-provider-ethr": "^6.0.0",
+		"@veramo/did-provider-web": "^6.0.0",
+		"@veramo/did-resolver": "^6.0.0",
+		"@veramo/key-manager": "^6.0.0",
+		"@veramo/kms-local": "^6.0.0",
+		"brdc-sjcl": "^1.1.1",
+		"did-resolver": "^4.1.0",
+		"egg": "^3.17.5",
+		"egg-core": "^5.4.1",
+		"egg-cors": "^3.0.1",
+		"egg-mysql": "^4.0.0",
+		"egg-scripts": "2",
+		"ethr-did-resolver": "^10.1.9",
+		"sqlite3": "^5.1.7",
+		"veramo-simple": "^1.1.0",
+		"web-did-resolver": "^2.0.27"
+	},
+	"devDependencies": {
+		"egg-bin": "6",
+		"egg-mock": "5",
+		"eslint": "8",
+		"eslint-config-egg": "13",
+		"patch-package": "^8.0.0",
+		"ts-node": "^10.9.2",
+		"typescript": "^5.5.2"
+	},
+	"engines": {
+		"node": ">=18.0.0"
+	},
+	"scripts": {
+		"start": "egg-scripts start --daemon --title=egg-server-egg",
+		"stop": "egg-scripts stop --title=egg-server-egg",
+		"dev": "egg-bin dev",
+		"test": "npm run lint -- --fix && npm run test:local",
+		"test:local": "egg-bin test",
+		"cov": "egg-bin cov",
+		"lint": "eslint .",
+		"ci": "npm run lint && npm run cov",
+		"prepare": "patch-package"
+	},
+	"repository": {
+		"type": "git",
+		"url": ""
+	},
+	"author": "",
+	"license": "MIT"
+}

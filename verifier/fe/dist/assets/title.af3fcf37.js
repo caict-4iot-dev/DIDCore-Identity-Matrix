@@ -1,0 +1,1 @@
+import{a as e,o as s,b as a,e as n,Z as _}from"./vue.dd6c0a93.js";import{a as c}from"./index.39131854.js";const l={class:"personal-title"},p=e({name:"loginAccount"}),r=e({...p,props:{title:{type:String,default:()=>""}},setup(t){const o=t;return(i,d)=>(s(),a("h4",l,[n("span",null,_(o.title),1)]))}});const m=c(r,[["__scopeId","data-v-429ec7eb"]]);export{m as default};
